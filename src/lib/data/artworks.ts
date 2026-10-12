@@ -22,11 +22,17 @@ export const artworks: Artwork[] = [
 		title: 'Crypto Nick Cave VI',
 		artistSlug: 'david-law',
 		series: 'Crypto Rock Special Series',
-		year: 2023, // TODO confirm: description says April 2023, certificate says Paris 2024 (docs/08 Q2)
+		year: 2023, // TODO confirm: description says April 2023, spec sheet 2022, certificate 2024 (docs/08 Q2)
 		technique: 'Fotografische compositie',
 		support: 'Print op wit vinyl, gelamineerd op twee aluminium platen',
 		widthCm: 60,
-		heightCm: 90,
+		heightCm: 90, // the spec sheet lists height 60 / width 90; the image is portrait (docs/08 Q13)
+		depthCm: 2,
+		weightKg: 4,
+		condition: 'Uitstekend',
+		madeIn: 'Parijs',
+		originCountry: 'Frankrijk',
+		soldBy: 'Rechtstreeks van de kunstenaar',
 		edition: { size: 8, artistProofs: 4, label: '1/4 E.A.' },
 		signed: true,
 		signatureNote: 'Genummerd en gesigneerd op de achterzijde',
@@ -35,6 +41,7 @@ export const artworks: Artwork[] = [
 			"Uit de Crypto Rock Special Series: een portret van Nick Cave, gereconstrueerd uit honderden foto's van de afgebeelde kunstenaar zelf. Van op afstand een krachtig, donker portret; van dichtbij een mozaïek van beelden.",
 		details: [
 			'Beperkte oplage van 8 exemplaren en 4 artist proofs (E.A.)',
+			'Afmetingen van het geheel: print en aluminium drager',
 			'Bevestiging aan de achterzijde, klaar om op te hangen',
 			'Flexibele laminering aan de voorzijde ter bescherming tegen uv en vocht'
 		],

@@ -55,13 +55,13 @@
 	aria-labelledby={titleId}
 	onclose={handleClose}
 	onclick={handleClick}
-	class="m-auto w-[calc(100%-2rem)] max-w-lg border border-hairline bg-plinth p-0 text-paper backdrop:bg-wall-deep/80 {className}"
+	class="m-auto w-[calc(100%-2rem)] max-w-lg rounded-card bg-canvas p-0 text-ink shadow-raised backdrop:bg-night/50 {className}"
 >
 	<div class="flex items-start justify-between gap-4 px-6 pt-6">
 		<h2 id={titleId} class="type-h2">{title}</h2>
 		<button
 			type="button"
-			class="-mt-2 -mr-3 grid size-11 shrink-0 place-items-center rounded-control text-aluminium hover:text-paper"
+			class="-mt-2 -mr-3 grid size-11 shrink-0 place-items-center rounded-full text-muted hover:bg-surface hover:text-ink"
 			aria-label={t('nav.close')}
 			onclick={() => dialog.close()}
 		>
@@ -72,7 +72,7 @@
 		{@render children()}
 	</div>
 	{#if actions}
-		<div class="flex flex-wrap justify-end gap-3 border-t border-hairline px-6 py-4">
+		<div class="flex flex-wrap justify-end gap-3 border-t border-line px-6 py-4">
 			{@render actions()}
 		</div>
 	{/if}

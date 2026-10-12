@@ -1,5 +1,6 @@
 import { config } from '#lib/config.js';
 import { t } from '#lib/i18n/index.js';
+import type { Edition } from '#lib/types.js';
 
 const wholeEuros = new Intl.NumberFormat(config.locale, {
 	style: 'currency',
@@ -27,6 +28,20 @@ export function formatDimensions(dims: { widthCm: number; heightCm: number; dept
 	return dims.depthCm
 		? t('artwork.dimensions3d', { w, h, d: cmFormatter.format(dims.depthCm) })
 		: t('artwork.dimensions', { w, h });
+}
+
+/** 4 → "4 kg", 2.5 → "2,5 kg". */
+export function formatWeight(kg: number): string {
+	return t('artwork.weight', { kg: cmFormatter.format(kg) });
+}
+
+/** "Exemplaar 1/4 E.A. uit een oplage van 8 + 4 E.A.", "Oplage van 30", or "Uniek werk". */
+export function formatEdition(edition: Edition | undefined): string {
+	if (!edition) return t('artwork.unique');
+	const { size, artistProofs: ap, label } = edition;
+	if (label && ap) return t('artwork.editionFull', { label, size, ap });
+	if (label) return t('artwork.editionLabelled', { label, size });
+	return ap ? t('artwork.editionWithProofs', { size, ap }) : t('artwork.editionSimple', { size });
 }
 
 const pad = (n: number) => String(n).padStart(2, '0');

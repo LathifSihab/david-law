@@ -122,7 +122,7 @@
 							tabindex={i === active ? 0 : -1}
 							aria-current={i === active ? 'true' : undefined}
 							aria-label={t('artwork.galleryImageOf', { n: i + 1, total })}
-							class="flex min-w-11 justify-center p-1 opacity-60 transition-opacity hover:opacity-100 aria-current:opacity-100 aria-current:outline aria-current:outline-paper"
+							class="flex min-w-11 justify-center rounded-control bg-well p-1.5 opacity-70 ring-1 ring-line transition-opacity ring-inset hover:opacity-100 aria-current:opacity-100 aria-current:ring-2 aria-current:ring-brand"
 							onclick={() => (active = i)}
 							onkeydown={onThumbKeydown}
 						>
@@ -139,7 +139,7 @@
 					</li>
 				{/each}
 			</ul>
-			<p class="shrink-0 type-small text-aluminium tabular-nums" aria-live="polite">{counter}</p>
+			<p class="shrink-0 type-small text-muted tabular-nums" aria-live="polite">{counter}</p>
 		</div>
 	{/if}
 </div>
@@ -147,13 +147,13 @@
 <dialog
 	bind:this={lightbox}
 	aria-label={counter}
-	class="m-0 h-dvh max-h-none w-full max-w-none bg-wall-deep p-0 text-paper backdrop:bg-wall-deep open:grid"
+	class="m-0 h-dvh max-h-none w-full max-w-none bg-well p-0 text-ink backdrop:bg-well open:grid"
 	onkeydown={onLightboxKeydown}
 	onclose={() => opener?.focus()}
 >
 	<div class="grid h-full grid-rows-[auto_minmax(0,1fr)]">
 		<div class="flex items-center justify-between px-gutter py-3">
-			<p class="type-small text-aluminium tabular-nums">{counter}</p>
+			<p class="type-small text-muted tabular-nums">{counter}</p>
 			<button
 				type="button"
 				class="-mr-2 grid size-11 place-items-center rounded-control"
@@ -168,7 +168,7 @@
 			{#if total > 1}
 				<button
 					type="button"
-					class="grid size-11 shrink-0 place-items-center rounded-control text-aluminium hover:text-paper"
+					class="grid size-11 shrink-0 place-items-center rounded-control text-muted hover:text-ink"
 					aria-label={t('artwork.galleryPrev')}
 					onclick={() => go(-1)}
 				>
@@ -200,7 +200,7 @@
 			{#if total > 1}
 				<button
 					type="button"
-					class="grid size-11 shrink-0 place-items-center rounded-control text-aluminium hover:text-paper"
+					class="grid size-11 shrink-0 place-items-center rounded-control text-muted hover:text-ink"
 					aria-label={t('artwork.galleryNext')}
 					onclick={() => go(1)}
 				>

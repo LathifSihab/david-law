@@ -84,9 +84,9 @@
 	}
 </script>
 
-<div class="bg-plinth p-5 sm:p-6">
+<div class="rounded-control bg-surface p-5 ring-1 ring-line ring-inset">
 	<!-- 1. Lot and state -->
-	<p class="flex items-center gap-3 type-small text-aluminium">
+	<p class="flex items-center gap-3 type-small text-muted">
 		<span>{t('auction.lot', { n: formatLotNumber(lot.lotNumber) })}</span>
 		{#if open}
 			<span class="flex items-center gap-1.5 text-live">
@@ -98,12 +98,12 @@
 
 	<!-- 2. Current bid -->
 	<div class="mt-4" aria-live="polite">
-		<p class="type-small text-aluminium">
+		<p class="type-small text-muted">
 			{current !== undefined ? t('auction.currentBid') : t('auction.startingBid')}
 		</p>
 		{#key flashKey}
 			<p
-				class="-mx-1 px-1 text-[2rem] leading-tight font-semibold"
+				class="-mx-1 px-1 text-[2rem] leading-tight font-bold"
 				class:text-live={open}
 				class:flash={flashKey > 0}
 			>
@@ -114,14 +114,14 @@
 	{#if count > 0}
 		<a
 			href="#history"
-			class="inline-flex min-h-11 items-center type-small text-aluminium underline underline-offset-4 hover:text-paper"
+			class="inline-flex min-h-11 items-center type-small text-muted underline underline-offset-4 hover:text-brand"
 		>
 			{plural(count, 'auction.bidsCountOne', 'auction.bidsCount')}
 		</a>
 	{/if}
 
 	<!-- 3. Countdown -->
-	<p class="mt-4 type-small text-aluminium">
+	<p class="mt-4 type-small text-muted">
 		{#if isLive}
 			{#if !closed}{t('auction.closesIn')}{/if}
 			<Countdown {endsAt} class="type-price" onend={() => (closed = true)} />
@@ -129,7 +129,7 @@
 			<Countdown
 				endsAt={startsAt}
 				live={false}
-				class="text-paper"
+				class="text-ink"
 				template={(time) => t('auction.startsIn', { time })}
 			/>
 		{/if}
@@ -137,7 +137,7 @@
 
 	<!-- 4. Reserve -->
 	{#if isLive}
-		<p class="mt-2 flex items-center gap-2 type-small" class:text-aluminium={!reserveMet}>
+		<p class="mt-2 flex items-center gap-2 type-small" class:text-muted={!reserveMet}>
 			{#if reserveMet}
 				<svg
 					width="16"
@@ -157,7 +157,7 @@
 		</p>
 	{/if}
 
-	<div class="mt-6 border-t border-hairline pt-6">
+	<div class="mt-6 border-t border-line pt-6">
 		{#if confirming !== null}
 			<!-- Confirm step -->
 			<p class="type-h3">{t('auction.confirmBid', { amount: formatPrice(confirming) })}</p>
@@ -168,7 +168,7 @@
 				<button
 					bind:this={confirmButton}
 					type="button"
-					class="min-h-12 rounded-control bg-paper px-6 font-medium text-wall transition-colors hover:bg-aluminium"
+					class="min-h-12 rounded-control bg-brand px-6 font-semibold text-canvas transition-colors hover:bg-brand-strong"
 					onclick={confirm}
 				>
 					{t('auction.confirm')}
@@ -179,10 +179,10 @@
 				<!-- 5. Bid input -->
 				<label for="bid-amount" class="type-small">{t('auction.yourBid')}</label>
 				<div
-					class="mt-1.5 flex h-12 items-center rounded-control border border-hairline bg-wall focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-spot"
+					class="mt-1.5 flex h-12 items-center rounded-control border border-line bg-canvas focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-focus"
 					class:border-live={error}
 				>
-					<span class="pl-4 text-aluminium" aria-hidden="true">€</span>
+					<span class="pl-4 text-muted" aria-hidden="true">€</span>
 					<input
 						id="bid-amount"
 						value={input}
@@ -194,11 +194,11 @@
 						disabled={!open}
 						aria-invalid={error ? 'true' : undefined}
 						aria-describedby="bid-hint{error ? ' bid-error' : ''}"
-						class="h-full min-w-0 flex-1 bg-transparent px-2 text-lg font-semibold text-paper outline-none disabled:opacity-50"
+						class="h-full min-w-0 flex-1 bg-transparent px-2 text-lg font-semibold text-ink outline-none disabled:opacity-50"
 						style="font-variant-numeric: tabular-nums"
 					/>
 				</div>
-				<p id="bid-hint" class="mt-1.5 type-small text-aluminium">
+				<p id="bid-hint" class="mt-1.5 type-small text-muted">
 					{t('auction.minBid', { amount: formatPrice(min) })}
 				</p>
 				{#if error}
@@ -211,7 +211,7 @@
 						<button
 							type="button"
 							disabled={!open}
-							class="min-h-11 rounded-control border border-hairline px-2 font-medium hover:border-paper disabled:cursor-not-allowed disabled:opacity-50"
+							class="min-h-11 rounded-full border border-line bg-canvas px-2 font-semibold hover:border-brand hover:text-brand disabled:cursor-not-allowed disabled:opacity-50"
 							onclick={() => {
 								input = toInputAmount(value);
 								requestConfirm(value);
@@ -228,7 +228,7 @@
 		{/if}
 
 		<!-- 8. Fine print -->
-		<p class="mt-4 type-small text-aluminium">{t('auction.fee', { pct: lot.buyerFeePct })}</p>
+		<p class="mt-4 type-small text-muted">{t('auction.fee', { pct: lot.buyerFeePct })}</p>
 	</div>
 </div>
 

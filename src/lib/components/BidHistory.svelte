@@ -28,8 +28,8 @@
 </script>
 
 <table class="w-full text-left">
-	<thead class="type-small text-aluminium">
-		<tr class="border-b border-hairline">
+	<thead class="type-small text-muted">
+		<tr class="border-b border-line">
 			<th scope="col" class="py-3 pr-4 font-normal">{t('auction.historyBidder')}</th>
 			<th scope="col" class="py-3 pr-4 font-normal">{t('auction.historyAmount')}</th>
 			<th scope="col" class="py-3 text-right font-normal">{t('auction.historyTime')}</th>
@@ -37,14 +37,14 @@
 	</thead>
 	<tbody>
 		{#each bids as bid (bid.placedAt + bid.amountEur)}
-			<tr class="border-b border-hairline" class:bg-plinth={bid.isYou}>
+			<tr class="border-b border-line" class:bg-surface={bid.isYou}>
 				<td class="py-3 pr-4 pl-2" class:font-semibold={bid.isYou}>
 					{bid.isYou ? t('auction.you') : bid.bidderLabel}
 				</td>
 				<td class="py-3 pr-4 font-semibold" style="font-variant-numeric: tabular-nums">
 					{formatPrice(bid.amountEur)}
 				</td>
-				<td class="py-3 pr-2 text-right type-small text-aluminium">
+				<td class="py-3 pr-2 text-right type-small text-muted">
 					<time datetime={bid.placedAt}>{now === null ? '' : relative(bid.placedAt, now)}</time>
 				</td>
 			</tr>

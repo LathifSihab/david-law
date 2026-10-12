@@ -45,7 +45,7 @@ static/
 2. **Privacy:** never add the certificate scan, registration numbers, SIRET/AGESSA numbers, purchase prices, supplier info or contact details of artists to the site. See `docs/07`. If source material contains something that looks private, leave it out and mention it in your summary.
 3. **Placeholder works:** every placeholder artwork has `isDemo: true`, an invented artist and title, and an abstract generated SVG image. They show a visible "Demo-werk" badge. Never use images of real artworks other than the David Law files in `assets/`. Never invent works by real artists.
 4. **Images:** always set `width`/`height` (or aspect-ratio), use `loading="lazy"` below the fold, `decoding="async"`, and meaningful Dutch `alt` text.
-5. **Accessibility:** semantic HTML, visible focus states, keyboard-usable gallery/filters/bid form, contrast at least WCAG AA on the dark theme.
+5. **Accessibility:** semantic HTML, visible focus states, keyboard-usable gallery/filters/bid form, contrast at least WCAG AA (light marketplace theme, docs/02).
 6. **Responsive:** mobile-first. Check 375px, 768px and 1280px widths.
 7. **Demo actions:** buttons like "Kopen" or "Bod plaatsen" never pretend to complete a real transaction. They update local state and/or show a toast that says this is a demo (copy in `docs/05`).
 8. **Keep it simple:** no state libraries, no component libraries, no animation libraries. Svelte transitions and CSS are enough.

@@ -23,7 +23,7 @@
 	<link rel="preload" href={schibstedLatin} as="font" type="font/woff2" crossorigin="anonymous" />
 	<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-	<meta name="theme-color" content="#1a1b1d" />
+	<meta name="theme-color" content="#ffffff" />
 	<!-- Link previews (WhatsApp, Slack, mail). The shared link is the home page, so these are site-wide. -->
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content={config.brandName} />
@@ -40,7 +40,7 @@
 
 <a
 	href="#content"
-	class="sr-only z-60 rounded-control bg-paper px-4 py-3 font-medium text-wall focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+	class="sr-only z-60 rounded-control bg-brand px-4 py-3 font-semibold text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
 >
 	{t('nav.skipToContent')}
 </a>

@@ -11,7 +11,7 @@
 </script>
 
 <span
-	class="inline-flex items-center rounded-full border border-demo bg-wall-deep/85 px-2.5 py-0.5 type-small leading-tight whitespace-nowrap text-paper {className}"
+	class="inline-flex items-center rounded-full bg-demo px-2.5 py-0.5 text-xs leading-tight font-semibold whitespace-nowrap text-canvas {className}"
 >
 	{kind === 'work' ? t('demo.badge') : t('demo.artistBadge')}
 </span>

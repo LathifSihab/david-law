@@ -22,47 +22,49 @@
 	<meta name="description" content={t('brand.footerLine')} />
 </svelte:head>
 
-<div class="shell pt-10 md:pt-14">
-	<h1 class="border-b border-hairline pb-6 type-h1">{t('artist.indexTitle')}</h1>
+<div class="shell pt-8 md:pt-12">
+	<h1 class="type-h1">{t('artist.indexTitle')}</h1>
 
-	<ul class="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+	<ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
 		{#each entries as { artist, count, image }, i (artist.slug)}
-			<li class="group relative">
-				{#if image}
-					<div class="flex h-56 items-end">
+			<li
+				class="group relative flex overflow-hidden rounded-card border border-line bg-canvas transition-shadow hover:shadow-raised"
+			>
+				<div class="flex w-2/5 shrink-0 items-center justify-center bg-well p-4">
+					{#if image}
 						<img
 							src={image.thumb}
 							width={image.width}
 							height={image.height}
 							alt=""
-							loading={i < 3 ? 'eager' : 'lazy'}
+							loading={i < 6 ? 'eager' : 'lazy'}
 							decoding="async"
-							class="block h-auto max-h-full w-auto max-w-full transition-[filter] duration-200 group-hover:brightness-[1.06]"
+							class="block max-h-40 w-auto max-w-full shadow-[0_6px_18px_-6px_rgb(16_18_24/0.35)]"
+							style="aspect-ratio: {image.width} / {image.height}; height: auto"
 						/>
-					</div>
-				{/if}
-				<div class="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-2">
-					<h2
-						class="type-h2 decoration-1 underline-offset-[6px] group-focus-within:underline group-hover:underline"
-					>
+					{/if}
+				</div>
+				<div class="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
+					<h2 class="type-h3 decoration-1 underline-offset-4 group-hover:underline">
 						{artist.name}
 					</h2>
-					<span class="type-small whitespace-nowrap text-aluminium tabular-nums">
-						{plural(count, 'home.worksCountOne', 'home.worksCount')}
-					</span>
+					{#if artist.basedIn}
+						<p class="type-small text-muted">{t('artist.basedIn', { place: artist.basedIn })}</p>
+					{/if}
+					<p class="mt-2 line-clamp-3 type-small text-muted">{artist.shortBio}</p>
+					<div class="mt-auto flex flex-wrap items-center gap-2 pt-3">
+						<span class="type-small font-semibold text-brand tabular-nums">
+							{plural(count, 'home.worksCountOne', 'home.worksCount')}
+						</span>
+						{#if artist.isDemo}
+							<DemoBadge kind="artist" />
+						{/if}
+					</div>
 				</div>
-				{#if artist.basedIn}
-					<p class="mt-1 type-small text-aluminium">
-						{t('artist.basedIn', { place: artist.basedIn })}
-					</p>
-				{/if}
-				{#if artist.isDemo}
-					<DemoBadge kind="artist" class="mt-3" />
-				{/if}
-				<!-- One link over the whole entry; the name stays the accessible label. -->
+				<!-- One link over the whole card; the name stays the accessible label. -->
 				<a
 					href={resolve('/kunstenaars/[slug]', { slug: artist.slug })}
-					class="absolute inset-0 z-10"
+					class="absolute inset-0 z-10 rounded-card"
 					aria-label={artist.name}
 				></a>
 			</li>

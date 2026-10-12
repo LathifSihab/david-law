@@ -79,3 +79,10 @@ export const LIMITS = {
 	message: 2000,
 	cell: 500
 } as const;
+
+/** Practical e-mail check on top of the browser's type="email" validation. */
+const EMAIL = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[a-z]{2,}$/i;
+
+export function isPlausibleEmail(email: string): boolean {
+	return EMAIL.test(email);
+}

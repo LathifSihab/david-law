@@ -20,11 +20,13 @@
 	import Button from '#lib/components/Button.svelte';
 	import Dialog from '#lib/components/Dialog.svelte';
 	import DemoBadge from '#lib/components/DemoBadge.svelte';
+	import FavouriteButton from '#lib/components/FavouriteButton.svelte';
+	import KeyFacts from '#lib/components/KeyFacts.svelte';
 	import Countdown from '#lib/components/Countdown.svelte';
 	import ArtworkTile from '#lib/components/ArtworkTile.svelte';
 	import SectionHeading from '#lib/components/SectionHeading.svelte';
 	import { toast } from '#lib/components/toasts.svelte.js';
-	import { LIMITS, sanitizeText } from '#lib/utils/input.js';
+	import { LIMITS, isPlausibleEmail, sanitizeText } from '#lib/utils/input.js';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -44,9 +46,6 @@
 		inquiryOpen = true;
 	}
 
-	// Practical e-mail check on top of the browser's type="email" validation.
-	const EMAIL = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[a-z]{2,}$/i;
-
 	/**
 	 * Validates like a real form would (a name that isn't only spaces or invisible characters, a
 	 * plausible e-mail address), then discards everything: nothing is sent or stored (docs/07).
@@ -58,7 +57,9 @@
 		const name = sanitizeText(field('name').value, LIMITS.name);
 		const email = sanitizeText(field('email').value, LIMITS.email);
 		field('name').setCustomValidity(name ? '' : t('artwork.inquiryNameInvalid'));
-		field('email').setCustomValidity(EMAIL.test(email) ? '' : t('artwork.inquiryEmailInvalid'));
+		field('email').setCustomValidity(
+			isPlausibleEmail(email) ? '' : t('artwork.inquiryEmailInvalid')
+		);
 		if (!form.reportValidity()) return;
 		form.reset();
 		inquiryOpen = false;
@@ -84,12 +85,12 @@
 </svelte:head>
 
 <div class="shell pt-6 md:pt-10">
-	<nav aria-label={t('artwork.breadcrumbLabel')} class="mb-6 type-small text-aluminium">
+	<nav aria-label={t('artwork.breadcrumbLabel')} class="mb-6 type-small text-muted">
 		<ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
 			<li>
 				<a
 					href={resolve('/collectie')}
-					class="-my-3 inline-block py-3 hover:text-paper hover:underline"
+					class="-my-3 inline-block py-3 hover:text-brand hover:underline"
 					>{t('artwork.breadcrumbRoot')}</a
 				>
 			</li>
@@ -98,44 +99,54 @@
 				<li>
 					<a
 						href={resolve('/kunstenaars/[slug]', { slug: artist.slug })}
-						class="-my-3 inline-block py-3 hover:text-paper hover:underline">{artist.name}</a
+						class="-my-3 inline-block py-3 hover:text-brand hover:underline">{artist.name}</a
 					>
 				</li>
 				<li aria-hidden="true">/</li>
 			{/if}
-			<li aria-current="page" class="text-paper">{artwork.title}</li>
+			<li aria-current="page" class="text-ink">{artwork.title}</li>
 		</ol>
 	</nav>
 
-	<div class="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-14">
+	<div
+		class="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-10"
+	>
 		<!-- Keyed, so moving to another work starts at its first image -->
 		{#key artwork.id}
 			<Gallery images={artwork.images} isDemo={artwork.isDemo} />
 		{/key}
 
 		<!-- Sticky on desktop while the gallery scrolls -->
-		<div class="self-start lg:sticky lg:top-28">
+		<div
+			class="self-start rounded-card border border-line p-5 sm:p-6 lg:sticky lg:top-36 lg:p-7 lg:shadow-card"
+		>
 			{#if artist}
 				<a
 					href={resolve('/kunstenaars/[slug]', { slug: artist.slug })}
-					class="-my-3 inline-block py-3 font-semibold decoration-1 underline-offset-4 hover:underline"
+					class="-my-3 inline-block py-3 font-semibold text-brand decoration-1 underline-offset-4 hover:underline"
 				>
 					{artist.name}
 				</a>
 			{/if}
-			<h1 class="mt-1 type-h1">{artwork.title}</h1>
-			<p class="mt-2 text-aluminium tabular-nums">{artwork.year}</p>
+			<div class="mt-1 flex items-start justify-between gap-4">
+				<h1 class="type-h1">{artwork.title}</h1>
+				<FavouriteButton id={artwork.id} title={artwork.title} class="shrink-0 ring-1 ring-line" />
+			</div>
+			<p class="mt-2 text-muted">
+				{artwork.madeIn ? `${artwork.madeIn}, ${artwork.year}` : artwork.year}
+			</p>
 			{#if artwork.isDemo}
 				<DemoBadge class="mt-4" />
 			{/if}
+			<KeyFacts {artwork} />
 
-			<div class="mt-8 border-t border-hairline pt-6">
+			<div class="mt-6 border-t border-line pt-6">
 				{#if artwork.status === 'veiling' && lot}
 					{@const bid = getCurrentBid(lot)}
 					{@const isLive = lot.state === 'live'}
 					{@const startsAt = getStartsAt(lot)}
-					<div class="bg-plinth p-5 sm:p-6">
-						<p class="flex items-center gap-3 type-small text-aluminium">
+					<div class="rounded-control bg-surface p-5 ring-1 ring-line ring-inset">
+						<p class="flex items-center gap-3 type-small text-muted">
 							<span>{t('auction.lot', { n: formatLotNumber(lot.lotNumber) })}</span>
 							{#if isLive}
 								<span class="flex items-center gap-1.5 text-live">
@@ -144,25 +155,25 @@
 								</span>
 							{/if}
 						</p>
-						<p class="mt-4 type-small text-aluminium">
+						<p class="mt-4 type-small text-muted">
 							{bid !== undefined ? t('auction.currentBid') : t('auction.startingBid')}
 						</p>
-						<p class="text-[1.75rem] leading-tight font-semibold" class:text-live={isLive}>
+						<p class="text-[1.75rem] leading-tight font-bold" class:text-live={isLive}>
 							{formatPrice(bid ?? lot.startingBidEur)}
 						</p>
 						{#if bid !== undefined}
-							<p class="mt-1 type-small text-aluminium tabular-nums">
+							<p class="mt-1 type-small text-muted tabular-nums">
 								{plural(getBidCount(lot), 'auction.bidsCountOne', 'auction.bidsCount')}
 							</p>
 						{/if}
-						<p class="mt-4 type-small text-aluminium">
+						<p class="mt-4 type-small text-muted">
 							{#if isLive}
 								{t('auction.closesIn')} <Countdown endsAt={getEndsAt(lot)} class="type-price" />
 							{:else if startsAt}
 								<Countdown
 									endsAt={startsAt}
 									live={false}
-									class="text-paper"
+									class="text-ink"
 									template={(time) => t('auction.startsIn', { time })}
 								/>
 							{/if}
@@ -172,7 +183,7 @@
 						</Button>
 					</div>
 				{:else if artwork.status === 'te-koop' && artwork.priceEur !== undefined}
-					<p class="text-[1.75rem] leading-tight font-semibold">
+					<p class="text-[1.75rem] leading-tight font-bold">
 						{formatPrice(artwork.priceEur)}
 					</p>
 					<div class="mt-5 grid gap-3 sm:grid-cols-2">
@@ -199,11 +210,11 @@
 			</div>
 
 			<!-- Trust row. Shipping and returns are demo copy (docs/08 Q5). -->
-			<ul class="mt-8 space-y-3 type-small">
+			<ul class="mt-6 space-y-3 rounded-control bg-surface p-4 type-small">
 				{#if artwork.certificate}
 					<li class="flex items-start gap-3">
 						<svg
-							class="mt-0.5 shrink-0 text-aluminium"
+							class="mt-0.5 shrink-0 text-brand"
 							width="18"
 							height="18"
 							viewBox="0 0 18 18"
@@ -219,7 +230,7 @@
 				{/if}
 				<li class="flex items-start gap-3">
 					<svg
-						class="mt-0.5 shrink-0 text-aluminium"
+						class="mt-0.5 shrink-0 text-brand"
 						width="18"
 						height="18"
 						viewBox="0 0 18 18"
@@ -236,7 +247,7 @@
 				</li>
 				<li class="flex items-start gap-3">
 					<svg
-						class="mt-0.5 shrink-0 text-aluminium"
+						class="mt-0.5 shrink-0 text-brand"
 						width="18"
 						height="18"
 						viewBox="0 0 18 18"
@@ -267,7 +278,7 @@
 			<ul class="{TILE_ROW} lg:grid-cols-4">
 				{#each related.works as work (work.id)}
 					<li class={TILE_ROW_ITEM}>
-						<ArtworkTile artwork={work} eyeLine="[--tile-h:240px] lg:[--tile-h:280px]" />
+						<ArtworkTile artwork={work} />
 					</li>
 				{/each}
 			</ul>
@@ -288,13 +299,13 @@
 		/>
 		<div>
 			<p class="font-semibold">{artist?.name}</p>
-			<p class="type-h3"><i>{artwork.title}</i>, {artwork.year}</p>
+			<p class="type-h3">{artwork.title}, {artwork.year}</p>
 			{#if artwork.priceEur !== undefined}
 				<p class="mt-2 type-price">{formatPrice(artwork.priceEur)}</p>
 			{/if}
 		</div>
 	</div>
-	<p class="mt-5 type-small text-aluminium">{t('artwork.shippingNote')}</p>
+	<p class="mt-5 type-small text-muted">{t('artwork.shippingNote')}</p>
 	{#snippet actions()}
 		<Button variant="secondary" onclick={() => (buyOpen = false)}>{t('artwork.cancel')}</Button>
 		<Button onclick={checkout}>{t('artwork.toCheckout')}</Button>
@@ -307,7 +318,7 @@
 	title={inquiry === 'price' ? t('artwork.inquiryTitle') : t('artwork.ask')}
 >
 	<form class="space-y-4" onsubmit={submitInquiry} oninput={clearValidity}>
-		<p class="type-small text-aluminium">{artist?.name}, <i>{artwork.title}</i></p>
+		<p class="type-small text-muted">{artist?.name}, <i>{artwork.title}</i></p>
 		<label class="block space-y-1.5">
 			<span class="type-small">{t('artwork.inquiryName')}</span>
 			<input
@@ -315,7 +326,7 @@
 				autocomplete="name"
 				maxlength={LIMITS.name}
 				required
-				class="block h-11 w-full rounded-control border border-hairline bg-wall px-3 text-paper"
+				class="block h-11 w-full rounded-control border border-line bg-canvas px-3 text-ink"
 			/>
 		</label>
 		<label class="block space-y-1.5">
@@ -327,7 +338,7 @@
 				maxlength={LIMITS.email}
 				spellcheck="false"
 				required
-				class="block h-11 w-full rounded-control border border-hairline bg-wall px-3 text-paper"
+				class="block h-11 w-full rounded-control border border-line bg-canvas px-3 text-ink"
 			/>
 		</label>
 		<label class="block space-y-1.5">
@@ -336,7 +347,7 @@
 				name="message"
 				rows="4"
 				maxlength={LIMITS.message}
-				class="block w-full rounded-control border border-hairline bg-wall px-3 py-2 text-paper"
+				class="block w-full rounded-control border border-line bg-canvas px-3 py-2 text-ink"
 			></textarea>
 		</label>
 		<div class="flex flex-wrap justify-end gap-3 pt-2">

@@ -116,7 +116,7 @@
 	]);
 </script>
 
-<div class="divide-y divide-hairline">
+<div class="divide-y divide-line">
 	{#each groups as group (group.id)}
 		<fieldset class="py-5 first:pt-0">
 			<legend class="float-left mb-2 w-full font-semibold">{group.legend}</legend>
@@ -131,13 +131,13 @@
 						>
 							<input
 								type="checkbox"
-								class="size-[18px] shrink-0 accent-paper"
+								class="size-[18px] shrink-0 accent-brand"
 								checked={option.checked}
 								{disabled}
 								onchange={option.toggle}
 							/>
 							<span class="flex-1">{option.label}</span>
-							<span class="type-small text-aluminium tabular-nums">{option.count}</span>
+							<span class="type-small text-muted tabular-nums">{option.count}</span>
 						</label>
 					</li>
 				{/each}
@@ -150,7 +150,7 @@
 				<legend class="float-left mb-3 w-full font-semibold">{t('catalogue.groups.price')}</legend>
 				<div class="clear-left grid grid-cols-2 gap-3">
 					<label class="space-y-1.5">
-						<span class="type-small text-aluminium">{t('catalogue.priceMin')}</span>
+						<span class="type-small text-muted">{t('catalogue.priceMin')}</span>
 						<input
 							type="text"
 							inputmode="decimal"
@@ -159,11 +159,11 @@
 							value={toInput(filters.min)}
 							oninput={onPriceInput}
 							onchange={(e) => onchange({ ...filters, min: parseAmount(e.currentTarget.value) })}
-							class="block h-11 w-full rounded-control border border-hairline bg-plinth px-3 text-paper tabular-nums"
+							class="block h-11 w-full rounded-control border border-line bg-canvas px-3 text-ink tabular-nums hover:border-muted"
 						/>
 					</label>
 					<label class="space-y-1.5">
-						<span class="type-small text-aluminium">{t('catalogue.priceMax')}</span>
+						<span class="type-small text-muted">{t('catalogue.priceMax')}</span>
 						<input
 							type="text"
 							inputmode="decimal"
@@ -172,7 +172,7 @@
 							value={toInput(filters.max)}
 							oninput={onPriceInput}
 							onchange={(e) => onchange({ ...filters, max: parseAmount(e.currentTarget.value) })}
-							class="block h-11 w-full rounded-control border border-hairline bg-plinth px-3 text-paper tabular-nums"
+							class="block h-11 w-full rounded-control border border-line bg-canvas px-3 text-ink tabular-nums hover:border-muted"
 						/>
 					</label>
 				</div>

@@ -122,6 +122,8 @@
 		];
 	});
 
+	const QUICK_STATUSES = ['veiling', 'te-koop', 'op-aanvraag'] as const;
+
 	// Mobile filter sheet: a native modal <dialog> traps focus and closes on Esc.
 	let sheet = $state<HTMLDialogElement>();
 </script>
@@ -131,13 +133,11 @@
 	<meta name="description" content={t('brand.footerLine')} />
 </svelte:head>
 
-<div class="shell pt-10 md:pt-14">
-	<header
-		class="flex flex-wrap items-end justify-between gap-x-8 gap-y-6 border-b border-hairline pb-6"
-	>
+<div class="shell pt-8 md:pt-12">
+	<header class="flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
 		<div>
 			<h1 class="type-h1">{t('catalogue.title')}</h1>
-			<p class="mt-2 text-aluminium tabular-nums" aria-live="polite">{countLabel}</p>
+			<p class="mt-2 text-muted tabular-nums" aria-live="polite">{countLabel}</p>
 		</div>
 
 		<div class="flex w-full flex-wrap items-end gap-3 md:w-auto">
@@ -150,16 +150,16 @@
 					type="search"
 					maxlength={LIMITS.search}
 					placeholder={t('nav.searchPlaceholder')}
-					class="block h-11 w-full rounded-control border border-hairline bg-plinth px-4 text-paper placeholder:text-aluminium"
+					class="block h-11 w-full rounded-full border border-line bg-canvas px-4 text-ink placeholder:text-muted hover:border-muted"
 				/>
 			</label>
 
 			<label class="flex flex-1 items-center gap-3 md:flex-none">
-				<span class="type-small whitespace-nowrap text-aluminium">{t('catalogue.sortLabel')}</span>
+				<span class="type-small whitespace-nowrap text-muted">{t('catalogue.sortLabel')}</span>
 				<select
 					value={filters.sort}
 					onchange={(e) => navigate({ ...filters, sort: e.currentTarget.value as SortKey })}
-					class="h-11 w-full rounded-control border border-hairline bg-plinth px-3 text-paper md:w-auto"
+					class="h-11 w-full rounded-full border border-line bg-canvas px-4 font-semibold text-ink hover:border-muted md:w-auto"
 				>
 					{#each SORTS as sort (sort.key)}
 						<option value={sort.key}>{t(`catalogue.sort.${sort.key}`)}</option>
@@ -169,7 +169,7 @@
 
 			<button
 				type="button"
-				class="inline-flex h-11 items-center gap-2 rounded-control border border-paper px-4 font-medium lg:hidden"
+				class="inline-flex h-11 items-center gap-2 rounded-full border border-ink px-4 font-semibold lg:hidden"
 				aria-haspopup="dialog"
 				onclick={() => sheet?.showModal()}
 			>
@@ -181,10 +181,35 @@
 		</div>
 	</header>
 
+	<!-- Quick status filters, as pills -->
+	<ul
+		class="-mx-gutter mt-6 no-scrollbar flex gap-2 overflow-x-auto border-b border-line px-gutter pb-5 lg:mx-0 lg:px-0"
+	>
+		{#each QUICK_STATUSES as status (status)}
+			{@const on = filters.status.includes(status)}
+			<li>
+				<button
+					type="button"
+					aria-pressed={on}
+					class="inline-flex min-h-10 items-center rounded-full border px-4 font-semibold whitespace-nowrap transition-colors {on
+						? 'border-ink bg-ink text-canvas'
+						: 'border-line bg-canvas text-ink hover:border-ink'}"
+					onclick={() =>
+						navigate({
+							...filters,
+							status: on ? filters.status.filter((s) => s !== status) : [...filters.status, status]
+						})}
+				>
+					{t(`catalogue.status.${status}`)}
+				</button>
+			</li>
+		{/each}
+	</ul>
+
 	<div class="mt-8 lg:grid lg:grid-cols-[var(--container-sidebar)_minmax(0,1fr)] lg:gap-12">
 		<!-- Desktop: sticky sidebar -->
 		<aside
-			class="sticky top-28 hidden max-h-[calc(100dvh-8rem)] self-start overflow-y-auto pr-2 lg:block"
+			class="sticky top-36 hidden max-h-[calc(100dvh-10rem)] self-start overflow-y-auto pr-2 lg:block"
 			aria-label={t('catalogue.filters')}
 		>
 			<FilterPanel works={artworks} {filters} onchange={(next) => navigate(next)} />
@@ -198,7 +223,7 @@
 							<li>
 								<button
 									type="button"
-									class="inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-plinth py-1 pr-2.5 pl-3.5 type-small text-paper hover:border-aluminium"
+									class="inline-flex min-h-10 items-center gap-2 rounded-full bg-brand-tint py-1 pr-3 pl-4 type-small font-semibold text-brand hover:bg-brand hover:text-canvas"
 									aria-label={t('catalogue.removeFilter', { name: chip.label })}
 									onclick={() => navigate(chip.next)}
 								>
@@ -210,7 +235,7 @@
 					</ul>
 					<button
 						type="button"
-						class="ml-1 min-h-11 px-1 type-small text-aluminium underline underline-offset-4 hover:text-paper"
+						class="ml-1 min-h-11 px-1 type-small font-semibold text-brand underline underline-offset-4 hover:text-brand-strong"
 						onclick={clearAll}
 					>
 						{t('catalogue.clearAll')}
@@ -219,23 +244,16 @@
 			{/if}
 
 			{#if results.length}
-				<ul
-					class="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-14 lg:grid-cols-3 xl:grid-cols-4"
-				>
+				<ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:gap-5">
 					{#each results as artwork, i (artwork.id)}
 						<li>
-							<ArtworkTile
-								{artwork}
-								headingLevel="h2"
-								loading={i < 4 ? 'eager' : 'lazy'}
-								eyeLine="[--tile-h:260px] sm:[--tile-h:240px] xl:[--tile-h:260px]"
-							/>
+							<ArtworkTile {artwork} headingLevel="h2" loading={i < 6 ? 'eager' : 'lazy'} />
 						</li>
 					{/each}
 				</ul>
 			{:else}
-				<div class="py-16">
-					<p class="type-h2">{t('catalogue.empty')}</p>
+				<div class="rounded-card bg-surface p-8 text-center ring-1 ring-line ring-inset md:p-14">
+					<p class="type-h3">{t('catalogue.empty')}</p>
 					<Button variant="secondary" class="mt-6" onclick={clearAll}>
 						{t('catalogue.clearAllFilters')}
 					</Button>
@@ -249,9 +267,9 @@
 <dialog
 	bind:this={sheet}
 	aria-labelledby="filter-sheet-title"
-	class="inset-x-0 top-auto bottom-0 m-0 max-h-[85dvh] w-full max-w-none flex-col bg-wall p-0 text-paper backdrop:bg-wall-deep/80 open:flex lg:hidden"
+	class="inset-x-0 top-auto bottom-0 m-0 max-h-[85dvh] w-full max-w-none flex-col rounded-t-card bg-canvas p-0 text-ink backdrop:bg-night/50 open:flex lg:hidden"
 >
-	<div class="flex items-center justify-between border-b border-hairline px-gutter py-3">
+	<div class="flex items-center justify-between border-b border-line px-gutter py-3">
 		<h2 id="filter-sheet-title" class="type-h3">{t('catalogue.filters')}</h2>
 		<button
 			type="button"
@@ -265,7 +283,7 @@
 	<div class="flex-1 overflow-y-auto px-gutter py-5">
 		<FilterPanel works={artworks} {filters} onchange={(next) => navigate(next)} />
 	</div>
-	<div class="grid grid-cols-2 gap-3 border-t border-hairline px-gutter py-4">
+	<div class="grid grid-cols-2 gap-3 border-t border-line px-gutter py-4">
 		<Button variant="secondary" onclick={clearAll}>{t('catalogue.clearAll')}</Button>
 		<Button onclick={() => sheet?.close()}>
 			{t('catalogue.showResults', { count: results.length })}

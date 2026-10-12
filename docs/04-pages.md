@@ -2,6 +2,8 @@
 
 All copy keys referenced here (`t('...')`) are defined in `docs/05-copy-nl.md`.
 
+> **Changed 12 Oct 2026:** the marketplace redesign (`docs/02`) replaces the visual layout below: the header, the home sections, the eye-line grids (now card grids), the auction rows (now cards) and the artist index (now cards). Behaviour, routes, data and copy rules below still apply. `WallLabel` was removed; its content now lives in the lot card and the purchase panel. New: a session-only favourites page at `/favorieten`.
+
 ## Global layout (`+layout.svelte`)
 
 **DemoBanner** sits above everything (see `docs/02`).

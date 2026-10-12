@@ -29,6 +29,11 @@ export interface Artwork {
 	widthCm: number;
 	heightCm: number;
 	depthCm?: number;
+	weightKg?: number;
+	condition?: string; // Dutch, e.g. 'Uitstekend'
+	madeIn?: string; // place of creation, e.g. 'Parijs'
+	originCountry?: string; // e.g. 'Frankrijk'
+	soldBy?: string; // seller type, e.g. 'Rechtstreeks van de kunstenaar'. Never a name or contact
 	edition?: Edition; // undefined = unique work
 	signed: boolean;
 	signatureNote?: string; // e.g. 'Genummerd en gesigneerd op de achterzijde'

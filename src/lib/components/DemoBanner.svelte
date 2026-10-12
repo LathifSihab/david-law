@@ -7,12 +7,12 @@
 </script>
 
 {#if visible}
-	<div class="bg-demo text-wall-deep">
+	<div class="bg-demo text-canvas">
 		<div class="shell flex items-center justify-between gap-4">
 			<p class="py-2 type-small font-medium">{t('demo.banner')}</p>
 			<button
 				type="button"
-				class="-mr-3 grid size-11 shrink-0 place-items-center rounded-control hover:bg-wall-deep/10 focus-visible:-outline-offset-4 focus-visible:outline-wall-deep"
+				class="-mr-3 grid size-11 shrink-0 place-items-center rounded-control hover:bg-canvas/10 focus-visible:-outline-offset-4"
 				aria-label={t('demo.bannerClose')}
 				onclick={() => (visible = false)}
 			>

@@ -115,7 +115,7 @@
 
 <div class="shell pt-10 md:pt-14">
 	<h1 class="max-w-[22ch] type-h1">{t('admin.title')}</h1>
-	<p class="mt-4 max-w-measure text-aluminium">{t('admin.intro')}</p>
+	<p class="mt-4 max-w-measure text-muted">{t('admin.intro')}</p>
 
 	<div class="mt-8 flex flex-wrap gap-3">
 		<Button variant="secondary" onclick={downloadTemplate}>{t('admin.template')}</Button>
@@ -124,9 +124,9 @@
 	<!-- Drop zone: a label for the (visually hidden) file input, so it also works by keyboard -->
 	<label
 		for="excel-file"
-		class="mt-8 flex min-h-48 cursor-pointer flex-col items-center justify-center gap-2 border border-dashed px-6 py-10 text-center transition-colors focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-spot {dragging
-			? 'border-paper bg-plinth'
-			: 'border-aluminium/50 hover:border-paper'}"
+		class="mt-8 flex min-h-48 cursor-pointer flex-col items-center justify-center gap-2 border border-dashed px-6 py-10 text-center transition-colors focus-within:outline-2 focus-within:outline-offset-3 focus-within:outline-focus {dragging
+			? 'border-ink bg-surface'
+			: 'border-muted/50 hover:border-ink'}"
 		ondragover={(e) => {
 			e.preventDefault();
 			dragging = true;
@@ -141,13 +141,13 @@
 			fill="none"
 			stroke="currentColor"
 			stroke-width="1.25"
-			class="text-aluminium"
+			class="text-muted"
 			aria-hidden="true"
 		>
 			<path d="M14 18V5M9 10l5-5 5 5M5 18v4h18v-4" />
 		</svg>
 		<span class="font-medium">{t('admin.drop')}</span>
-		<span class="type-small text-aluminium">.xlsx, .xls, .csv</span>
+		<span class="type-small text-muted">.xlsx, .xls, .csv</span>
 		<input
 			id="excel-file"
 			type="file"
@@ -159,22 +159,20 @@
 
 	<div aria-live="polite">
 		{#if error}
-			<p class="mt-6 border border-paper bg-plinth px-4 py-3" role="alert">{error}</p>
+			<p class="mt-6 border border-ink bg-surface px-4 py-3" role="alert">{error}</p>
 		{/if}
 
 		{#if result}
-			<div
-				class="mt-10 flex flex-wrap items-end justify-between gap-6 border-b border-hairline pb-6"
-			>
+			<div class="mt-10 flex flex-wrap items-end justify-between gap-6 border-b border-line pb-6">
 				<div>
-					<p class="type-small text-aluminium">{t('admin.file', { name: fileName })}</p>
+					<p class="type-small text-muted">{t('admin.file', { name: fileName })}</p>
 					<p class="mt-1 type-h2">
 						{okCount === 1
 							? t('admin.summaryOne', { warn: warnCount })
 							: t('admin.summary', { ok: okCount, warn: warnCount })}
 					</p>
 					{#if result.ignored.length}
-						<p class="mt-2 type-small text-aluminium">
+						<p class="mt-2 type-small text-muted">
 							{t('admin.ignored', { names: result.ignored.join(', ') })}
 						</p>
 					{/if}
@@ -187,8 +185,8 @@
 			</h2>
 			<div class="mt-4 overflow-x-auto">
 				<table class="w-full min-w-4xl text-left type-small">
-					<thead class="text-aluminium">
-						<tr class="border-b border-hairline">
+					<thead class="text-muted">
+						<tr class="border-b border-line">
 							<th scope="col" class="py-3 pr-4 font-normal">ID</th>
 							<th scope="col" class="py-3 pr-4 font-normal">{t('artwork.spec.artist')}</th>
 							<th scope="col" class="py-3 pr-4 font-normal">{t('artwork.spec.title')}</th>
@@ -204,8 +202,8 @@
 						{#each result.rows.slice(0, PREVIEW_ROWS) as row, i (i)}
 							{@const v = row.values}
 							{@const status = normaliseStatus(v.status)}
-							<tr class="border-b border-hairline align-top">
-								<td class="py-3 pr-4 text-aluminium">{v.id ?? '—'}</td>
+							<tr class="border-b border-line align-top">
+								<td class="py-3 pr-4 text-muted">{v.id ?? '—'}</td>
 								<td class="py-3 pr-4">{v.artist ?? '—'}</td>
 								<td class="py-3 pr-4 font-medium"><i>{v.title ?? '—'}</i></td>
 								<td class="py-3 pr-4">{v.year ?? '—'}</td>
@@ -227,13 +225,13 @@
 								<td class="py-3">
 									<ul class="flex flex-wrap gap-1.5">
 										{#if row.issues.length === 0}
-											<li class="rounded-full border border-hairline px-2.5 py-0.5 text-aluminium">
+											<li class="rounded-full border border-line px-2.5 py-0.5 text-muted">
 												{t('admin.ok')}
 											</li>
 										{:else}
 											{#each row.issues as issue (issue)}
 												<li
-													class="rounded-full border border-paper px-2.5 py-0.5 font-medium whitespace-nowrap"
+													class="rounded-full border border-ink px-2.5 py-0.5 font-medium whitespace-nowrap"
 												>
 													{issueLabel[issue]()}
 												</li>
@@ -246,7 +244,7 @@
 					</tbody>
 				</table>
 			</div>
-			<p class="mt-4 type-small text-aluminium tabular-nums">
+			<p class="mt-4 type-small text-muted tabular-nums">
 				{plural(result.rows.length, 'home.worksCountOne', 'home.worksCount')}
 			</p>
 		{/if}

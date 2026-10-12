@@ -17,7 +17,21 @@ export const nl = {
 		toastInquiry:
 			'Je aanvraag is verstuurd (demo). In de echte versie ontvang je een bevestiging per e-mail.',
 		toastImport: '{count} werken geïmporteerd (demo). Er is niets opgeslagen.',
-		toastImportOne: '1 werk geïmporteerd (demo). Er is niets opgeslagen.'
+		toastImportOne: '1 werk geïmporteerd (demo). Er is niets opgeslagen.',
+		toastLogin: 'Inloggen bestaat niet in de demo. In de echte versie log je hier in.',
+		toastNewsletter: 'Je bent ingeschreven (demo). Er wordt niets verstuurd of opgeslagen.'
+	},
+
+	favourites: {
+		title: 'Favorieten',
+		intro:
+			'Werken die je bewaart, staan hier zolang dit venster open is. In de demo wordt niets opgeslagen.',
+		empty: 'Je hebt nog geen werken bewaard. Tik op het hartje bij een werk om het hier te zetten.',
+		add: '{title} bewaren in favorieten',
+		remove: '{title} verwijderen uit favorieten',
+		added: 'Bewaard in je favorieten (demo).',
+		removed: 'Verwijderd uit je favorieten.',
+		headerLabel: 'Favorieten, {count} bewaard'
 	},
 
 	nav: {
@@ -30,7 +44,10 @@ export const nl = {
 		close: 'Sluiten',
 		contact: 'Contact',
 		admin: 'Beheer (demo)',
-		skipToContent: 'Naar de inhoud'
+		skipToContent: 'Naar de inhoud',
+		login: 'Inloggen',
+		categories: 'Categorieën',
+		home: 'Home'
 	},
 
 	home: {
@@ -56,6 +73,48 @@ export const nl = {
 			'Koop een werk meteen tegen een vaste prijs, of bied mee in een van onze veilingen.'
 		],
 		artistsTitle: 'Kunstenaars',
+		allArtists: 'Alle kunstenaars',
+		newTitle: 'Nieuw in de collectie',
+		newSubtitle: 'De werken die het laatst zijn toegevoegd.',
+		closingSoonSubtitle: 'Laatste kans om mee te bieden.',
+		featuredSubtitle: 'Door ons gekozen uit de collectie.',
+		bidNow: 'Bied mee',
+		lotsCount: '{count} kavels',
+		lotsCountOne: '1 kavel',
+		promoAuctionsTitle: 'Lopende veilingen',
+		promoAuctionsText: 'Bied mee voordat de klok stopt.',
+		promoBuyTitle: 'Koop direct',
+		promoBuyText: '{count} werken met een vaste prijs',
+		categoriesTitle: 'Populaire categorieën',
+		uspTitle: 'Waarom Kunstkamer',
+		usp: {
+			selected: { title: 'Met de hand geselecteerd', text: 'Elk werk wordt door ons gekozen.' },
+			choice: { title: 'Koop direct of bied mee', text: 'Een vaste prijs of een veiling.' },
+			certificate: {
+				title: 'Certificaat van echtheid',
+				text: 'Waar van toepassing, van de kunstenaar.'
+			},
+			shipping: { title: 'Verzekerd verzonden', text: 'Zorgvuldig verpakt, tot aan je deur.' }
+		},
+		howTitle: 'Zo werkt Kunstkamer',
+		how: {
+			discover: {
+				title: 'Ontdek',
+				text: 'Blader door schilderkunst, fotografie en grafiek, of zoek op kunstenaar.'
+			},
+			bid: {
+				title: 'Bied mee of koop',
+				text: 'Koop een werk tegen een vaste prijs, of bied mee tot de veiling sluit.'
+			},
+			receive: {
+				title: 'Ontvang',
+				text: 'Je werk wordt zorgvuldig verpakt en verzekerd naar je verzonden.'
+			}
+		},
+		newsletterTitle: 'Mis geen enkele veiling',
+		newsletterText: 'Elke week de nieuwste werken en veilingen in je mailbox.',
+		newsletterLabel: 'Je e-mailadres',
+		newsletterButton: 'Inschrijven',
 		worksCount: '{count} werken',
 		worksCountOne: '1 werk'
 	},
@@ -147,14 +206,22 @@ export const nl = {
 			edition: 'Oplage',
 			signed: 'Gesigneerd',
 			certificate: 'Certificaat',
+			weight: 'Gewicht',
+			condition: 'Staat',
+			madeIn: 'Plaats van creatie',
+			originCountry: 'Land van herkomst',
+			soldBy: 'Verkocht door',
 			yes: 'Ja',
 			no: 'Nee'
 		},
 		dimensions: '{w} × {h} cm',
 		dimensions3d: '{w} × {h} × {d} cm',
-		editionFull: 'Exemplaar {label} uit een oplage van {size} + {ap} E.A.',
+		weight: '{kg} kg',
+		allSpecs: 'Alle specificaties',
+		keyFacts: 'Kerngegevens',
+		editionFull: 'Exemplaar {label} uit een oplage van {size}\u00a0+\u00a0{ap}\u00a0E.A.',
 		editionSimple: 'Oplage van {size}',
-		editionWithProofs: 'Oplage van {size} + {ap} E.A.',
+		editionWithProofs: 'Oplage van {size}\u00a0+\u00a0{ap}\u00a0E.A.',
 		editionLabelled: 'Exemplaar {label} uit een oplage van {size}',
 		unique: 'Uniek werk',
 		aboutArtist: 'Over de kunstenaar',
@@ -245,7 +312,11 @@ export const nl = {
 		back: 'Bekijk de collectie'
 	},
 	footer: {
-		rights: '© 2026 Kunstkamer — demo'
+		rights: '© 2026 Kunstkamer — demo',
+		discover: 'Ontdekken',
+		categories: 'Categorieën',
+		help: 'Hulp',
+		howBidding: 'Hoe werkt bieden?'
 	},
 
 	meta: {
@@ -253,6 +324,7 @@ export const nl = {
 		homeDescription: 'Ontdek en koop hedendaagse kunst, of bied mee in onze veilingen.',
 		collectionTitle: 'Collectie — Kunstkamer',
 		auctionsTitle: 'Veilingen — Kunstkamer',
-		artistsTitle: 'Kunstenaars — Kunstkamer'
+		artistsTitle: 'Kunstenaars — Kunstkamer',
+		favouritesTitle: 'Favorieten — Kunstkamer'
 	}
 } as const;

@@ -1,9 +1,12 @@
 /** A row of tiles: horizontal scroll-snap on small screens, a grid from `lg` (add lg:grid-cols-N). */
 export const TILE_ROW =
-	'-mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-6 overflow-x-auto px-gutter pb-4 lg:mx-0 lg:grid lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-0';
+	'no-scrollbar -mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-3 overflow-x-auto px-gutter pt-1 pb-4 sm:gap-4 lg:mx-0 lg:grid lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0';
 
 export const TILE_ROW_ITEM =
-	'w-[68vw] max-w-72 shrink-0 snap-start sm:w-[40vw] lg:w-auto lg:max-w-none';
+	'w-[44vw] max-w-64 shrink-0 snap-start sm:w-[30vw] lg:w-auto lg:max-w-none';
+
+/** A responsive grid of cards: two columns on phones, up to four on wide screens. */
+export const CARD_GRID = 'grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:gap-5 xl:grid-cols-4';
 
 /**
  * Inline style giving an image an explicit width, so the browser reserves its space before it

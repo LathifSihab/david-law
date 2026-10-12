@@ -13,7 +13,7 @@ Carl explicitly wrote: *"Sommige info is niet voor publicatie"* (some informatio
 | Purchase prices, margins, owner/provenance notes | Future Excel | Commercial and private |
 | Any field Carl marks as internal | Future Excel | Ask when unsure |
 
-The certificate PDF was **intentionally not copied** into `assets/`. If it ever shows up in the repo, delete it.
+The certificate PDF must never be committed. Carl's raw files (the certificate, the description .docx and the original PNGs) may sit in `assets/` locally, but `.gitignore` excludes them; only the processed images in `assets/artworks/` are tracked. If the certificate ever shows up in git history, remove it.
 
 ## Allowed to publish
 

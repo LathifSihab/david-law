@@ -26,7 +26,7 @@
 </svelte:head>
 
 <div class="shell py-24">
-	<p class="type-small text-aluminium tabular-nums">{status}</p>
+	<p class="type-small text-muted tabular-nums">{status}</p>
 	<h1 class="mt-2 max-w-[20ch] type-h1">{message}</h1>
 	<Button href={resolve('/collectie')} class="mt-10">{t('notFound.back')}</Button>
 </div>

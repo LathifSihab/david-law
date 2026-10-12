@@ -21,3 +21,9 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Raw source material from Carl. The certificate holds private registration numbers (docs/07):
+# never commit it. Only the processed images in assets/artworks/ are tracked.
+/assets/*.pdf
+/assets/*.docx
+/assets/*.png

@@ -21,12 +21,19 @@ interface Route {
 	[key: string]: unknown;
 }
 
-const config = JSON.parse(readFileSync(CONFIG, 'utf8')) as { routes?: Route[] };
+const config = JSON.parse(readFileSync(CONFIG, 'utf8')) as {
+	routes?: Route[];
+	overrides?: Record<string, unknown>;
+};
 const routes = config.routes ?? [];
 
+// The adapter serves 404.html at the clean path /404 via an override. Error-phase destinations
+// resolve against real file paths, so keep the file at /404.html and point the error route there.
+if (config.overrides) delete config.overrides['404.html'];
+
 if (!routes.some((route) => route.handle === 'error')) {
-	routes.push({ handle: 'error' }, { src: '/.*', dest: '/404', status: 404 });
-	config.routes = routes;
-	writeFileSync(CONFIG, JSON.stringify(config, null, '\t'));
-	console.log('vercel-404: unknown URLs now get the custom 404 page.');
+	routes.push({ handle: 'error' }, { src: '/.*', dest: '/404.html', status: 404 });
 }
+config.routes = routes;
+writeFileSync(CONFIG, JSON.stringify(config, null, '\t'));
+console.log('vercel-404: unknown URLs now get the custom 404 page.');

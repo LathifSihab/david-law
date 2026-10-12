@@ -2,10 +2,13 @@
 <script lang="ts">
 	import { t, tList } from '#lib/i18n/index.js';
 	import type { AuctionLot } from '#lib/types.js';
-	import { getArtworkById } from '#lib/data/artworks.js';
+	import { getArtworkById, getMainImage } from '#lib/data/artworks.js';
 	import { getLiveAuctions, getUpcomingAuctions } from '#lib/data/auctions.js';
+	import { getEndsAt } from '#lib/data/auction-state.svelte.js';
 	import { CARD_GRID } from '#lib/utils/layout.js';
 	import ArtworkTile from '#lib/components/ArtworkTile.svelte';
+	import Countdown from '#lib/components/Countdown.svelte';
+	import PageHero from '#lib/components/PageHero.svelte';
 
 	const withArtwork = (lots: AuctionLot[]) =>
 		lots.flatMap((lot) => {
@@ -17,6 +20,13 @@
 		{ id: 'lopend', label: t('auction.tabRunning'), lots: withArtwork(getLiveAuctions()) },
 		{ id: 'binnenkort', label: t('auction.tabUpcoming'), lots: withArtwork(getUpcomingAuctions()) }
 	];
+
+	// Hero wall: the running lots, closing soonest first, then what's coming.
+	const heroWorks = [...tabs[0].lots, ...tabs[1].lots].map(({ artwork }) => ({
+		image: getMainImage(artwork),
+		isDemo: artwork.isDemo
+	}));
+	const firstToClose = tabs[0].lots[0]?.lot;
 
 	// ARIA tabs: arrow keys move between tabs, Tab moves into the panel.
 	let active = $state(0);
@@ -35,14 +45,33 @@
 	<meta name="description" content={t('brand.footerLine')} />
 </svelte:head>
 
-<div class="shell pt-8 md:pt-12">
-	<h1 class="type-h1">{t('auction.indexTitle')}</h1>
-	<p class="mt-2 max-w-measure text-muted">{t('home.promoAuctionsText')}</p>
+<PageHero
+	eyebrow={t('auction.indexTitle')}
+	title={t('auction.heroTitle')}
+	accent={t('auction.heroAccent')}
+	intro={t('auction.heroIntro')}
+	works={heroWorks}
+	live={tabs[0].lots.length > 0}
+	stats={[
+		{ value: tabs[0].lots.length, label: t('auction.heroRunning') },
+		{ value: tabs[1].lots.length, label: t('auction.heroUpcoming') }
+	]}
+>
+	{#if firstToClose}
+		<p
+			class="inline-flex items-center gap-2 rounded-full bg-canvas/10 px-4 py-2 type-small text-night-muted ring-1 ring-canvas/15 ring-inset"
+		>
+			{t('auction.heroClosesFirst')}
+			<Countdown endsAt={getEndsAt(firstToClose)} live={false} class="font-semibold text-canvas" />
+		</p>
+	{/if}
+</PageHero>
 
+<div class="shell pt-8 md:pt-12">
 	<div
 		role="tablist"
 		aria-label={t('auction.indexTitle')}
-		class="mt-6 inline-flex gap-1 rounded-full bg-surface p-1 ring-1 ring-line ring-inset"
+		class="inline-flex gap-1 rounded-full bg-surface p-1 ring-1 ring-line ring-inset"
 	>
 		{#each tabs as tab, i (tab.id)}
 			<button

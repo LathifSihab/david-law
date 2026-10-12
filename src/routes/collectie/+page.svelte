@@ -7,11 +7,12 @@
 	import { t, plural } from '#lib/i18n/index.js';
 	import { config } from '#lib/config.js';
 	import { LIMITS, sanitizeText } from '#lib/utils/input.js';
-	import { artworks } from '#lib/data/artworks.js';
-	import { getArtist } from '#lib/data/artists.js';
+	import { artworks, getFeatured, getMainImage } from '#lib/data/artworks.js';
+	import { artists, getArtist } from '#lib/data/artists.js';
 	import {
 		EMPTY_FILTERS,
 		SORTS,
+		TECHNIQUE_GROUPS,
 		activeFilterCount,
 		filterWorks,
 		parseFilters,
@@ -24,6 +25,12 @@
 	import FilterPanel from '#lib/components/FilterPanel.svelte';
 	import Button from '#lib/components/Button.svelte';
 	import CloseIcon from '#lib/components/CloseIcon.svelte';
+	import PageHero from '#lib/components/PageHero.svelte';
+
+	// Hero wall: the featured works, topped up with the rest of the collection.
+	const heroWorks = [...getFeatured(), ...artworks]
+		.filter((work, i, all) => all.indexOf(work) === i)
+		.map((work) => ({ image: getMainImage(work), isDemo: work.isDemo }));
 
 	// The page is prerendered without a query string, so the URL can only be read in the browser.
 	// Until mount we render the unfiltered collection, exactly like the prerendered HTML.
@@ -133,12 +140,22 @@
 	<meta name="description" content={t('brand.footerLine')} />
 </svelte:head>
 
+<PageHero
+	eyebrow={t('catalogue.title')}
+	title={t('catalogue.heroTitle')}
+	accent={t('catalogue.heroAccent')}
+	intro={t('catalogue.heroIntro')}
+	works={heroWorks}
+	stats={[
+		{ value: artworks.length, label: t('catalogue.heroWorks') },
+		{ value: artists.length, label: t('catalogue.heroArtists') },
+		{ value: TECHNIQUE_GROUPS.length, label: t('catalogue.heroTechniques') }
+	]}
+/>
+
 <div class="shell pt-8 md:pt-12">
 	<header class="flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
-		<div>
-			<h1 class="type-h1">{t('catalogue.title')}</h1>
-			<p class="mt-2 text-muted tabular-nums" aria-live="polite">{countLabel}</p>
-		</div>
+		<p class="type-h3 tabular-nums" aria-live="polite">{countLabel}</p>
 
 		<div class="flex w-full flex-wrap items-end gap-3 md:w-auto">
 			<label class="w-full md:w-72">

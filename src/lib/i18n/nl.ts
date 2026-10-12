@@ -121,6 +121,13 @@ export const nl = {
 
 	catalogue: {
 		title: 'Collectie',
+		heroTitle: 'Kunst om elke dag',
+		heroAccent: 'naar te kijken',
+		heroIntro:
+			'Schilderkunst, fotografie, zeefdruk en werk op papier, met de hand geselecteerd bij hedendaagse kunstenaars.',
+		heroWorks: 'werken',
+		heroArtists: 'kunstenaars',
+		heroTechniques: 'technieken',
 		resultCount: '{count} werken',
 		resultCountOne: '1 werk',
 		searchLabel: 'Zoeken in de collectie',
@@ -237,12 +244,24 @@ export const nl = {
 
 	artist: {
 		indexTitle: 'Kunstenaars',
+		heroTitle: 'De handen achter',
+		heroAccent: 'het werk',
+		heroIntro: 'Ontdek wie er achter elk werk staat: hun verhaal, hun techniek en wat hen drijft.',
+		heroArtists: 'kunstenaars',
+		heroWorks: 'werken',
 		basedIn: 'Gevestigd in {place}',
 		worksBy: 'Werken van {name}'
 	},
 
 	auction: {
 		indexTitle: 'Veilingen',
+		heroTitle: 'Elke seconde',
+		heroAccent: 'telt',
+		heroIntro:
+			'Bied mee op geselecteerde werken. Een bod in de laatste minuut verlengt de veiling, zodat iedereen een eerlijke kans krijgt.',
+		heroRunning: 'lopend',
+		heroUpcoming: 'binnenkort',
+		heroClosesFirst: 'Eerstvolgende sluit over',
 		tabRunning: 'Lopend',
 		tabUpcoming: 'Binnenkort',
 		lot: 'Kavel {n}',

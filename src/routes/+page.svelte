@@ -21,6 +21,7 @@
 	import { formatPrice } from '#lib/utils/format.js';
 	import { LIMITS, isPlausibleEmail, sanitizeText } from '#lib/utils/input.js';
 	import { TILE_ROW, TILE_ROW_ITEM } from '#lib/utils/layout.js';
+	import { reveal } from '#lib/utils/reveal.js';
 	import Button from '#lib/components/Button.svelte';
 	import ArtworkTile from '#lib/components/ArtworkTile.svelte';
 	import Countdown from '#lib/components/Countdown.svelte';
@@ -107,12 +108,13 @@
 		aria-labelledby="hero-title"
 	>
 		<div
-			class="grid overflow-hidden rounded-card bg-night text-canvas md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
+			class="enter grid overflow-hidden rounded-card bg-night text-canvas md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
 		>
 			<div class="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
 				{#if heroLot?.state === 'live'}
 					<p
-						class="inline-flex w-fit items-center gap-2 rounded-full bg-canvas/10 px-3 py-1 type-small font-semibold"
+						class="enter inline-flex w-fit items-center gap-2 rounded-full bg-canvas/10 px-3 py-1 type-small font-semibold"
+						style="--enter-delay: 150ms"
 					>
 						<span class="relative flex size-2" aria-hidden="true">
 							<span
@@ -123,12 +125,21 @@
 						{t('home.liveAuction')}
 					</p>
 				{/if}
-				<h1 id="hero-title" class="mt-4 max-w-[17ch] type-display text-balance">
+				<h1
+					id="hero-title"
+					class="enter mt-4 max-w-[17ch] type-display text-balance"
+					style="--enter-delay: 250ms"
+				>
 					{t('brand.tagline')}
 				</h1>
-				<p class="mt-4 max-w-[46ch] text-night-muted">{t('home.heroIntro')}</p>
+				<p class="enter mt-4 max-w-[46ch] text-night-muted" style="--enter-delay: 380ms">
+					{t('home.heroIntro')}
+				</p>
 
-				<div class="mt-6 rounded-control border border-canvas/15 p-4">
+				<div
+					class="enter mt-6 rounded-control border border-canvas/15 p-4"
+					style="--enter-delay: 500ms"
+				>
 					<p class="type-small text-night-muted">{t('home.featuredLot')}</p>
 					<p class="mt-1 font-semibold">{heroWork.title}</p>
 					<p class="type-small text-night-muted">{heroArtist?.name}, {heroWork.year}</p>
@@ -155,7 +166,7 @@
 					{/if}
 				</div>
 
-				<div class="mt-6 flex flex-wrap gap-3">
+				<div class="enter mt-6 flex flex-wrap gap-3" style="--enter-delay: 620ms">
 					<Button href={heroHref}>{heroLot ? t('home.bidNow') : t('home.toAuction')}</Button>
 					<Button href={resolve('/collectie')} variant="ghost">{t('home.viewCollection')}</Button>
 				</div>
@@ -174,8 +185,8 @@
 					alt={heroImage.alt}
 					fetchpriority="high"
 					decoding="async"
-					class="relative block max-h-72 w-auto max-w-full shadow-[0_24px_60px_-12px_rgb(0_0_0/0.8)] md:max-h-[32rem]"
-					style="aspect-ratio: {heroImage.width} / {heroImage.height}; height: auto"
+					class="enter-hang relative block max-h-72 w-auto max-w-full shadow-[0_24px_60px_-12px_rgb(0_0_0/0.8)] md:max-h-[32rem]"
+					style="aspect-ratio: {heroImage.width} / {heroImage.height}; height: auto; --enter-delay: 300ms"
 				/>
 			</a>
 		</div>
@@ -183,7 +194,8 @@
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:gap-5">
 			<a
 				href={resolve('/veilingen')}
-				class="group flex flex-col justify-between gap-6 rounded-card bg-brand-tint p-6 transition-shadow hover:shadow-raised"
+				style="--enter-delay: 200ms"
+				class="enter group flex flex-col justify-between gap-6 rounded-card bg-brand-tint p-6 transition-shadow hover:shadow-raised"
 			>
 				<div>
 					<p class="type-small font-semibold text-brand">
@@ -194,8 +206,8 @@
 					</h2>
 					<p class="mt-1 text-muted">{t('home.promoAuctionsText')}</p>
 				</div>
-				<div class="flex -space-x-4" aria-hidden="true">
-					{#each closingSoon.slice(0, 4) as { artwork } (artwork.id)}
+				<div class="enter-fan flex -space-x-4" style="--enter-delay: 600ms" aria-hidden="true">
+					{#each closingSoon.slice(0, 4) as { artwork }, i (artwork.id)}
 						{@const image = getMainImage(artwork)}
 						<img
 							src={image.thumb}
@@ -203,6 +215,7 @@
 							height={image.height}
 							alt=""
 							decoding="async"
+							style="--i: {i}"
 							class="size-20 rounded-control border-2 border-brand-tint bg-canvas object-cover"
 						/>
 					{/each}
@@ -211,7 +224,8 @@
 
 			<a
 				href={resolve('/collectie?status=te-koop')}
-				class="group flex flex-col justify-between gap-6 rounded-card bg-surface p-6 ring-1 ring-line transition-shadow ring-inset hover:shadow-raised"
+				style="--enter-delay: 320ms"
+				class="enter group flex flex-col justify-between gap-6 rounded-card bg-surface p-6 ring-1 ring-line transition-shadow ring-inset hover:shadow-raised"
 			>
 				<div>
 					<p class="type-small font-semibold text-brand">
@@ -222,8 +236,8 @@
 					</h2>
 					<p class="mt-1 text-muted">{t('home.featuredSubtitle')}</p>
 				</div>
-				<div class="flex -space-x-4" aria-hidden="true">
-					{#each featured.slice(0, 4) as artwork (artwork.id)}
+				<div class="enter-fan flex -space-x-4" style="--enter-delay: 720ms" aria-hidden="true">
+					{#each featured.slice(0, 4) as artwork, i (artwork.id)}
 						{@const image = getMainImage(artwork)}
 						<img
 							src={image.thumb}
@@ -231,6 +245,7 @@
 							height={image.height}
 							alt=""
 							decoding="async"
+							style="--i: {i}"
 							class="size-20 rounded-control border-2 border-surface bg-canvas object-cover"
 						/>
 					{/each}
@@ -243,6 +258,7 @@
 	<section class="shell -mt-[calc(var(--spacing-section)/2)]" aria-labelledby="usp-title">
 		<h2 id="usp-title" class="sr-only">{t('home.uspTitle')}</h2>
 		<ul
+			{@attach reveal({ stagger: true })}
 			class="grid grid-cols-1 gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
 		>
 			{#each usps as usp (usp.key)}
@@ -282,7 +298,7 @@
 			href={resolve('/veilingen')}
 			linkLabel={t('home.allAuctions')}
 		/>
-		<ul class="{TILE_ROW} lg:grid-cols-5">
+		<ul class="{TILE_ROW} lg:grid-cols-5" {@attach reveal({ stagger: true })}>
 			{#each closingSoon as { lot, artwork } (lot.slug)}
 				<li class={TILE_ROW_ITEM}>
 					<ArtworkTile {artwork} {lot} />
@@ -294,7 +310,10 @@
 	<!-- Populaire categorieën -->
 	<section class="shell" aria-labelledby="browse-title">
 		<SectionHeading id="browse-title" title={t('home.categoriesTitle')} />
-		<ul class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
+		<ul
+			class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5"
+			{@attach reveal({ stagger: true })}
+		>
 			{#each categories as category (category.key)}
 				<li>
 					<a href={resolve(`/collectie?techniek=${category.param}`)} class="group block">
@@ -341,7 +360,7 @@
 			href={resolve('/collectie')}
 			linkLabel={t('home.viewAll')}
 		/>
-		<ul class="{TILE_ROW} lg:grid-cols-4">
+		<ul class="{TILE_ROW} lg:grid-cols-4" {@attach reveal({ stagger: true })}>
 			{#each featured as artwork (artwork.id)}
 				<li class={TILE_ROW_ITEM}>
 					<ArtworkTile {artwork} />
@@ -354,7 +373,7 @@
 	<section class="bg-surface py-section" aria-labelledby="how-title">
 		<div class="shell">
 			<h2 id="how-title" class="type-h2">{t('home.howTitle')}</h2>
-			<ol class="mt-8 grid gap-4 md:grid-cols-3 md:gap-5">
+			<ol class="mt-8 grid gap-4 md:grid-cols-3 md:gap-5" {@attach reveal({ stagger: true })}>
 				{#each steps as step, i (step)}
 					<li class="rounded-card bg-canvas p-6 ring-1 ring-line ring-inset">
 						<span
@@ -378,7 +397,7 @@
 			href={resolve('/collectie')}
 			linkLabel={t('home.viewAll')}
 		/>
-		<ul class="{TILE_ROW} lg:grid-cols-5">
+		<ul class="{TILE_ROW} lg:grid-cols-5" {@attach reveal({ stagger: true })}>
 			{#each newest as artwork (artwork.id)}
 				<li class={TILE_ROW_ITEM}>
 					<ArtworkTile {artwork} />
@@ -396,6 +415,7 @@
 			linkLabel={t('home.allArtists')}
 		/>
 		<ul
+			{@attach reveal({ stagger: true })}
 			class="-mx-gutter no-scrollbar flex gap-5 overflow-x-auto px-gutter pb-2 lg:mx-0 lg:justify-between lg:px-0"
 		>
 			{#each artistList as { artist, count, image } (artist.slug)}
@@ -434,7 +454,11 @@
 	</section>
 
 	<!-- Over het platform + nieuwsbrief -->
-	<section class="shell grid gap-5 lg:grid-cols-2" aria-labelledby="about-title">
+	<section
+		class="shell grid gap-5 lg:grid-cols-2"
+		aria-labelledby="about-title"
+		{@attach reveal({ stagger: true })}
+	>
 		<div class="rounded-card p-6 ring-1 ring-line ring-inset sm:p-8 lg:p-10">
 			<h2 id="about-title" class="type-h2">{t('home.aboutTitle')}</h2>
 			<div class="mt-4 space-y-3 text-muted">

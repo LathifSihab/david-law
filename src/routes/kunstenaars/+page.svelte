@@ -6,6 +6,7 @@
 	import { getMainImage, getWorksByArtist } from '#lib/data/artworks.js';
 	import { surnameKey } from '#lib/utils/catalogue.js';
 	import DemoBadge from '#lib/components/DemoBadge.svelte';
+	import PageHero from '#lib/components/PageHero.svelte';
 
 	// By surname, as on the home page. The representative work is a featured one if there is one.
 	const entries = [...artists]
@@ -13,8 +14,19 @@
 		.map((artist) => {
 			const works = getWorksByArtist(artist.slug);
 			const representative = works.find((w) => w.featured) ?? works[0];
-			return { artist, count: works.length, image: representative && getMainImage(representative) };
+			return {
+				artist,
+				count: works.length,
+				work: representative,
+				image: representative && getMainImage(representative)
+			};
 		});
+
+	// One work per artist on the hero wall, each labelled with the artist's name.
+	const heroWorks = entries.flatMap(({ artist, work, image }) =>
+		work && image ? [{ image, isDemo: work.isDemo, caption: artist.name }] : []
+	);
+	const workTotal = entries.reduce((sum, entry) => sum + entry.count, 0);
 </script>
 
 <svelte:head>
@@ -22,10 +34,21 @@
 	<meta name="description" content={t('brand.footerLine')} />
 </svelte:head>
 
-<div class="shell pt-8 md:pt-12">
-	<h1 class="type-h1">{t('artist.indexTitle')}</h1>
+<PageHero
+	eyebrow={t('artist.indexTitle')}
+	title={t('artist.heroTitle')}
+	accent={t('artist.heroAccent')}
+	intro={t('artist.heroIntro')}
+	works={heroWorks}
+	shape="arch"
+	stats={[
+		{ value: entries.length, label: t('artist.heroArtists') },
+		{ value: workTotal, label: t('artist.heroWorks') }
+	]}
+/>
 
-	<ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+<div class="shell pt-8 md:pt-12">
+	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
 		{#each entries as { artist, count, image }, i (artist.slug)}
 			<li
 				class="group relative flex overflow-hidden rounded-card border border-line bg-canvas transition-shadow hover:shadow-raised"

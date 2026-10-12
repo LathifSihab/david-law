@@ -15,7 +15,10 @@ export default defineConfig({
 			// Fully static: no SPA fallback, every route is prerendered (see src/routes/+layout.ts).
 			// No options on purpose: the defaults (build/, strict, no fallback) are what we want, and
 			// passing any option disables adapter-static's Vercel zero-config output.
-			adapter: adapter()
+			adapter: adapter(),
+			// Root-relative asset URLs, so 404.html works when served at any depth (e.g. a missing
+			// /collectie/<slug>). Relative "./_app" paths would resolve to /collectie/_app/.
+			paths: { relative: false }
 		})
 	]
 });

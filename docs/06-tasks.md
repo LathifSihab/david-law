@@ -64,6 +64,27 @@ Run these **in order**, one per Claude Code turn. Each task has a prompt you can
 
 ---
 
+## Task 3b — Marketplace inventory (added 12 Oct 2026)
+
+Added after the team confirmed the positioning: a Catawiki-style marketplace where David Law is one artist among many (docs/01 Positioning). Tasks 1–3 stay as they are; this task only extends the data.
+
+**Prompt:**
+> Do Task 3b from docs/06-tasks.md, using docs/03.
+
+**Work**
+1. `scripts/generate-placeholders.ts`: add the 12 new works (D-12 to D-23) and three styles for the new artists (warm arcs and discs, monochrome stepped greys, fine drawn lines). Regenerate.
+2. `src/lib/types.ts`: add `reservePriceEur` to `AuctionLot` (`startsInMs` already exists).
+3. `src/lib/data/`: the 3 new invented artists, the 12 new works and auction lots 4–6, with reserves exactly as in docs/03. Update the featured list (CR-0001, D-11, D-14, D-09, D-15).
+4. `src/lib/i18n/nl.ts`: the new `home.*` keys from docs/05.
+5. Rename the package from `david-law` to `kunstkamer` in `package.json`.
+
+**Done when**
+- [ ] 23 placeholder SVGs exist, clearly abstract, each artist's works still read as a series
+- [ ] 9 artists, 24 works, 6 auction lots (5 live, 1 upcoming), all placeholders `isDemo: true`
+- [ ] No identifier, title or copy outside the David Law artwork and artist records mentions David Law
+
+---
+
 ## Task 4 — Home page
 
 **Prompt:**
@@ -71,11 +92,14 @@ Run these **in order**, one per Claude Code turn. Each task has a prompt you can
 
 **Work**
 1. Build `WallLabel.svelte` and `ArtworkTile.svelte` (docs/02).
-2. Build the home page: hero with the spotlight and "lights on" load animation, Uitgelicht row, Lopende veilingen, Over het platform, Kunstenaars list.
-3. The hero countdown uses `endsAt = mountTime + lot.endsInMs`. Store the computed `endsAt` in a module-level map keyed by lot slug, so the home page, overview and lot page all show the same time within one session.
+2. Build the home page in the order from docs/04: platform hero with the featured lot in the spotlight and the "lights on" load animation, Sluit binnenkort (live lots sorted by end time), Uitgelicht row, Ontdek per techniek, Over het platform, Kunstenaars list.
+3. Countdowns use `endsAt = mountTime + lot.endsInMs`. Store the computed `endsAt` in a module-level map keyed by lot slug, so the home page, overview and lot page all show the same time within one session.
+4. Put the technique grouping (technique/support → Schilderkunst, Fotografie, Zeefdruk, Werk op papier) in `src/lib/utils/catalogue.ts` now, so Task 5 reuses it.
 
 **Done when**
-- [ ] The hero looks spot-lit and premium at 1280px and on a 375px phone
+- [ ] The home page reads as a marketplace: the headline is about the platform, not one artist
+- [ ] The featured lot looks spot-lit and premium at 1280px and on a 375px phone
+- [ ] Sluit binnenkort shows all 5 live lots, soonest first, with ticking countdowns
 - [ ] The featured row bottom-aligns works of different ratios on one eye line
 - [ ] All links go to valid routes (temporary stub pages are OK for routes built later)
 
@@ -124,7 +148,7 @@ Run these **in order**, one per Claude Code turn. Each task has a prompt you can
 > Do Task 7 from docs/06-tasks.md (docs/04 section 4).
 
 **Done when**
-- [ ] `/kunstenaars` lists all 6 artists with counts
+- [ ] `/kunstenaars` lists all 9 artists with counts
 - [ ] `/kunstenaars/david-law` shows the bio, a detail-crop visual instead of a portrait, and his work
 - [ ] Placeholder artists show the "Demo-kunstenaar" badge
 

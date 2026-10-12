@@ -18,17 +18,24 @@ All copy keys referenced here (`t('...')`) are defined in `docs/05-copy-nl.md`.
 
 ## 1. Home `/`
 
+The home page sells **the platform**, not one artist (docs/01 Positioning). Order: Hero, Sluit binnenkort, Uitgelicht, Ontdek per techniek, Over het platform, Kunstenaars.
+
 ### Hero
-- Split layout. **Left:** the auction state ("Live veiling" with an amber dot), the artwork title (`display` size, Bodoni), artist name, the `Countdown`, the current bid and the primary button "Bekijk de veiling" linking to `/veilingen/crypto-nick-cave-vi`. **Right:** the David Law main image in a `SpotlightFrame`.
-- On mobile the image comes first, then the text.
-- Load animation: "the lights come on" (`docs/02` Motion).
+- Split layout. **Left:** the platform headline (`brand.tagline`, `display` size, Bodoni), a one-line intro (`home.heroIntro`), a primary button "Bekijk de collectie" (`/collectie`) and a secondary button "Alle veilingen" (`/veilingen`). **Right:** the featured lot (CR-0001) in a `SpotlightFrame`, with a compact caption underneath: "Uitgelichte kavel" with the amber live dot, the `WallLabel` (tile variant), the current bid, the `Countdown` and a text link "Naar de veiling".
+- The featured lot is framed as one lot among many. The headline never names the artist.
+- On mobile the text block comes first, then the featured lot.
+- Load animation: "the lights come on" (`docs/02` Motion), on the featured lot's spotlight.
+
+### Sluit binnenkort (closing soon)
+- The Catawiki core: section title "Sluit binnenkort" with a text link "Alle veilingen" on the right.
+- An eye-line row of all live lots **sorted by end time, soonest first**: image, `WallLabel` (tile variant), current bid in `live` amber and a `Countdown`. Each item links to its lot page. On mobile it becomes a horizontal scroll-snap row.
 
 ### Uitgelicht (featured)
 - Section title "Uitgelicht" with a text link "Bekijk de hele collectie" on the right.
-- An eye-line row of 4 `ArtworkTile`s (the featured works other than the hero). On mobile it becomes a horizontal scroll-snap row.
+- An eye-line row of 4 `ArtworkTile`s (the featured works other than the featured lot). On mobile it becomes a horizontal scroll-snap row.
 
-### Lopende veilingen
-- Two wide rows, one per live auction: thumbnail, `WallLabel`, current bid, countdown and a "Naar de veiling" button.
+### Ontdek per techniek (browse by technique)
+- Four large text links in Bodoni at `h2` size (Schilderkunst, Fotografie, Zeefdruk, Werk op papier), each with its work count in `small`, linking to `/collectie?techniek=...`. Uses the same technique grouping as the catalogue filter. No icons or image cards.
 
 ### Over het platform
 - Short text block (max 60ch), three short paragraphs: curated works, every work checked with a certificate, and buy directly or bid. Copy is in `docs/05`.
@@ -127,6 +134,7 @@ An eye-line row of up to 4 other works by the same artist. If there are fewer th
 
 - Title "Veilingen" with tabs: "Lopend" and "Binnenkort".
 - Each lot is a wide row: image, lot number ("Kavel 001"), `WallLabel`, current bid or starting bid, `Countdown` (or "Start over 3 dagen") and a button.
+- "Lopend" is sorted by end time, soonest first (the same order as "Sluit binnenkort" on the home page).
 
 ---
 

@@ -175,14 +175,19 @@ Note: the supplied main image is only 369×751 px. It's fine for tiles but soft 
 | `crypto-nick-cave-vi` | CR-0001 (real) | live | €400 | 6 bids up to €850 | 1d 14h 22m |
 | `demo-veiling-2` | placeholder D-07 | live | €200 | 3 bids up to €340 | 5h 10m |
 | `demo-veiling-3` | placeholder D-10 | binnenkort | €300 | none | starts in 3 days |
+| `demo-veiling-4` | placeholder D-13 | live | €600 | 4 bids up to €875 | 42m (shows the under-one-hour format) |
+| `demo-veiling-5` | placeholder D-16 | live | €250 | 2 bids up to €310 | 2d 6h |
+| `demo-veiling-6` | placeholder D-20 | live | €150 | 5 bids up to €275 | 3h 45m |
 
-For all lots: `bidIncrementEur: 25` below €1,000 and 50 above, `buyerFeePct: 9`, `reserveMet: false` until the bid reaches €900 (in the demo, the first bid of €900 or more flips it to `true`).
+Five live lots with staggered end times make the "Sluit binnenkort" row on the home page look like a busy auction house.
+
+For all lots: `bidIncrementEur: 25` below €1,000 and 50 above, `buyerFeePct: 9`. Each lot has an internal `reservePriceEur` (never displayed as an amount): `reserveMet` is `false` until a bid reaches it. Reserves: CR-0001 €900 (docs/08 Q3), D-07 €400, D-13 €1.000, D-16 €350, D-20 €300, D-10 €450. Add `reservePriceEur: number` and `startsInMs?: number` (for `binnenkort` lots) to `AuctionLot`.
 
 **All amounts are demo values** (docs/08 Q3). Bidder labels are random four-digit numbers, for example "Bieder 4821".
 
-## Placeholder works (11)
+## Placeholder works (23)
 
-All have `isDemo: true`, invented artists, abstract generated SVG images and the "Demo-werk" badge. Five invented artists, so the artist filter has something to filter. The names are invented and are not meant to refer to real people.
+All have `isDemo: true`, invented artists, abstract generated SVG images and the "Demo-werk" badge. Eight invented artists, so the marketplace feels populated and David Law is clearly one artist among many. The names are invented and are not meant to refer to real people.
 
 | ID | Artist (invented) | Title | Year | Technique / support | Size (cm) | Ratio | Status | Price |
 |---|---|---|---|---|---|---|---|---|
@@ -197,7 +202,21 @@ All have `isDemo: true`, invented artists, abstract generated SVG images and the
 | D-09 | Yuna Breckx | Hoogwater | 2024 | Fotografie, pigmentprint op dibond | 60×120 | 1:2 | te koop | €1.900 |
 | D-10 | Yuna Breckx | Laagwater | 2024 | Fotografie, pigmentprint op dibond | 120×60 | 2:1 | veiling (binnenkort) | — |
 | D-11 | Lotte Vanderzande | Getijde III | 2025 | Acryl op doek | 100×150 | 2:3 | te koop | €2.600 |
+| D-12 | Noor El Amrani | Woestijnkleur 1 | 2023 | Olie op doek | 90×90 | 1:1 | te koop | €1.750 |
+| D-13 | Noor El Amrani | Woestijnkleur 2 | 2023 | Olie op doek | 90×90 | 1:1 | veiling | — |
+| D-14 | Noor El Amrani | Middaghitte | 2025 | Olie op doek | 140×100 | 7:5 | te koop | €3.200 |
+| D-15 | Pieter-Jan Lauwers | Haven, 05:40 | 2022 | Fotografie, zilvergelatinedruk | 40×50 | 4:5 | te koop | €750 |
+| D-16 | Pieter-Jan Lauwers | Dok 7 | 2023 | Fotografie, pigmentprint, oplage 7 | 100×70 | 10:7 | veiling | — |
+| D-17 | Pieter-Jan Lauwers | Mist over de Schelde | 2024 | Fotografie, pigmentprint op dibond | 150×100 | 3:2 | op aanvraag | — |
+| D-18 | Sanne Dewulf | Lijnstudie 4 | 2024 | Inkt op papier | 30×40 | 3:4 | te koop | €290 |
+| D-19 | Sanne Dewulf | Lijnstudie 9 | 2024 | Inkt op papier | 30×40 | 3:4 | verkocht | €290 |
+| D-20 | Sanne Dewulf | Wolkenatlas | 2025 | Houtskool op papier | 70×100 | 7:10 | veiling | — |
+| D-21 | Ward Stoffels | Raster 5 | 2025 | Zeefdruk, oplage 20 | 50×50 | 1:1 | te koop | €420 |
+| D-22 | Inès Marrot | Fragment 23 | 2022 | Gemengde techniek op papier | 50×70 | 5:7 | te koop | €690 |
+| D-23 | Milan Okafor-Peeters | Atelier, winter | 2025 | Olie op paneel | 30×40 | 3:4 | te koop | €850 |
+
+The three new artists get their own generator styles, so each artist still reads as a series: Noor El Amrani warm arcs and discs, Pieter-Jan Lauwers monochrome stepped greys, Sanne Dewulf fine drawn lines on paper.
 
 Each placeholder artist gets a one-paragraph invented bio that ends with "(Demo-kunstenaar)". Each placeholder work gets a two-sentence invented description.
 
-Featured on home: CR-0001 (hero), D-11, D-09, D-03, D-05.
+Featured on home: CR-0001 (the featured lot in the hero, framed as one lot among many), then D-11, D-14, D-09, D-15 in the Uitgelicht row.

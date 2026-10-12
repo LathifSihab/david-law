@@ -14,6 +14,8 @@ Send these to Dries (or Carl) on Monday. For each one, the demo uses the **defau
 | Q8 | Brand name and logo | The quote talks about "eigen branding" (own branding) | Working name "Kunstkamer" with a typographic wordmark, both swappable in `config.ts` |
 | Q9 | Can Carl share **the Excel file** (or 5–10 rows of it), even without images? | Real data would replace placeholders and validate the column mapping in docs/03 | 11 placeholder works marked as demo |
 | Q10 | Which fields in the spec files are "niet voor publicatie" (not for publication), exactly? | Avoid publishing private data from future files | Everything listed in docs/07 is treated as private |
+| Q11 | **Internal (our team):** which items from the quote must be *visible* in Wednesday's preliminary demo? The plan is based on the six-phase summary in docs/01; the full quote hasn't been checked line by line yet | It's the second-biggest pending quote; the demo should preview what Carl is paying for | Phase 2 (catalogue and UX) in full, a working glimpse of phase 4 (auctions), and the Excel import mock if time allows. Later phases are mentioned as "coming in later phases" |
+| Q12 | **Positioning (resolved 12 Oct 2026):** a Catawiki-style multi-artist marketplace, with David Law as one of many artists, not his own website | Shapes the home page and the inventory size | Applied in docs/01, 03, 04, 05 and Task 3b |
 
 ## Message to send (Dutch, ready to paste)
 

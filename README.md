@@ -41,7 +41,7 @@ Going one task at a time is slower than "build everything", but it keeps each st
 
 | When | Tasks |
 |---|---|
-| Monday | 1–3: setup, design tokens, data + layout shell |
+| Monday | 1–3: setup, design tokens, data + layout shell. 3b: marketplace inventory (added 12 Oct, after the positioning was confirmed) |
 | Tuesday | 4–7: home, catalogue, artwork detail, artist page |
 | Wednesday morning | 8: auction lot. 9 (admin import mock) only if ahead of schedule |
 | Wednesday midday | 10: polish, mobile pass, deploy, checklist |

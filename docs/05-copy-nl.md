@@ -149,6 +149,7 @@ export const nl = {
     dimensions3d: '{w} × {h} × {d} cm',
     editionFull: 'Exemplaar {label} uit een oplage van {size} + {ap} E.A.',
     editionSimple: 'Oplage van {size}',
+    editionWithProofs: 'Oplage van {size} + {ap} E.A.',
     unique: 'Uniek werk',
     aboutArtist: 'Over de kunstenaar',
     viewArtist: 'Meer over {name}',

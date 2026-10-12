@@ -39,6 +39,13 @@ export const nl = {
 		viewAuction: 'Bekijk de veiling',
 		featured: 'Uitgelicht',
 		viewAll: 'Bekijk de hele collectie',
+		heroIntro:
+			'Schilderkunst, fotografie en grafiek van hedendaagse kunstenaars. Koop direct of bied mee in onze veilingen.',
+		viewCollection: 'Bekijk de collectie',
+		allAuctions: 'Alle veilingen',
+		featuredLot: 'Uitgelichte kavel',
+		closingSoon: 'Sluit binnenkort',
+		browseTitle: 'Ontdek per techniek',
 		runningAuctions: 'Lopende veilingen',
 		toAuction: 'Naar de veiling',
 		aboutTitle: 'Over het platform',

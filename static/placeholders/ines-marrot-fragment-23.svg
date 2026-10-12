@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="857" height="1200" viewBox="0 0 857 1200">
+<defs>
+<filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="5.1"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="322" stitchTiles="stitch"/>
+<feColorMatrix type="saturate" values="0"/>
+</filter>
+</defs>
+<rect width="857" height="1200" fill="#e6dcc4"/><rect x="349.4" y="386" width="452.7" height="222.3" fill="#2a2622" opacity="0.8" transform="rotate(-5.3 575.8 497.2)" style="mix-blend-mode:multiply"/><rect x="493.4" y="1069.8" width="342" height="130.9" fill="#9a7a3e" opacity="0.7" transform="rotate(-6.1 664.4 1135.2)" style="mix-blend-mode:multiply"/><rect x="241" y="184.1" width="331.4" height="315.9" fill="#5a4a30" opacity="0.9" transform="rotate(-8.1 406.7 342.1)" style="mix-blend-mode:multiply"/><rect x="579.3" y="604.6" width="298.1" height="366" fill="#9a7a3e" opacity="0.9" transform="rotate(3.7 728.4 787.6)" style="mix-blend-mode:multiply"/><rect x="525" y="838.9" width="199.1" height="202.2" fill="#9a7a3e" opacity="0.7" transform="rotate(4.5 624.6 940)" style="mix-blend-mode:multiply"/><rect x="242.4" y="590.9" width="211.7" height="416.9" fill="#5a4a30" opacity="0.7" transform="rotate(-10 348.2 799.3)" style="mix-blend-mode:multiply"/><rect x="471.4" y="697.7" width="463.4" height="109.8" fill="#9a7a3e" opacity="0.8" transform="rotate(-9.1 703.1 752.6)" style="mix-blend-mode:multiply"/><rect x="34.8" y="551" width="175.5" height="110.3" fill="#c9a85f" opacity="0.7" transform="rotate(10.7 122.6 606.1)" style="mix-blend-mode:multiply"/><rect x="160.9" y="568.7" width="232.1" height="319" fill="#2a2622" opacity="0.8" transform="rotate(-4.5 276.9 728.2)" style="mix-blend-mode:multiply"/><line x1="0" y1="313.9" x2="857" y2="364.1" stroke="#2a2622" stroke-width="2" opacity="0.6"/><line x1="0" y1="872.8" x2="857" y2="795.2" stroke="#2a2622" stroke-width="2.2" opacity="0.6"/><line x1="0" y1="554.2" x2="857" y2="655.2" stroke="#2a2622" stroke-width="1.6" opacity="0.6"/>
+<rect width="857" height="1200" filter="url(#grain)" opacity="0.09" style="mix-blend-mode:overlay"/>
+</svg>

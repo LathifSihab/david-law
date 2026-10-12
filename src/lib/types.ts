@@ -67,6 +67,8 @@ export interface AuctionLot {
 	lotNumber: number;
 	startingBidEur: number;
 	reserveMet: boolean;
+	/** Internal minimum price. Never displayed as an amount; only drives "Minimumprijs bereikt". */
+	reservePriceEur: number;
 	bidIncrementEur: number; // minimum step
 	buyerFeePct: number; // shown as info only
 	endsInMs: number; // DEMO: end time = page open + this. Keeps the countdown always live

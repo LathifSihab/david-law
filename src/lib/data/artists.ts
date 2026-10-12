@@ -63,6 +63,37 @@ export const artists: Artist[] = [
 			'Yuna Breckx werkt met lange sluitertijden aan de Noordzeekust. Haar pigmentprints op dibond tonen water en lucht als opeenvolgende banden van tint. (Demo-kunstenaar)'
 		],
 		isDemo: true
+	},
+	// Task 3b: three more invented artists (docs/03).
+	{
+		slug: 'noor-el-amrani',
+		name: 'Noor El Amrani',
+		basedIn: 'Mechelen',
+		shortBio: 'Schildert warme, vlakke landschappen waarin zon en horizon samenvallen.',
+		bio: [
+			'Noor El Amrani schildert in olieverf, met een palet van zand, oker en terracotta. Haar landschappen zijn teruggebracht tot een horizon, een schijf en een paar bogen: meer een temperatuur dan een plek. (Demo-kunstenaar)'
+		],
+		isDemo: true
+	},
+	{
+		slug: 'pieter-jan-lauwers',
+		name: 'Pieter-Jan Lauwers',
+		basedIn: 'Antwerpen',
+		shortBio: 'Fotograaf van havens en dokken in grijstinten, vaak bij het eerste licht.',
+		bio: [
+			'Pieter-Jan Lauwers fotografeert de haven van Antwerpen in zwart-wit. Hij werkt vroeg in de ochtend, wanneer kranen en loodsen nog vlakke silhouetten zijn tegen een grijze lucht. (Demo-kunstenaar)'
+		],
+		isDemo: true
+	},
+	{
+		slug: 'sanne-dewulf',
+		name: 'Sanne Dewulf',
+		basedIn: 'Leuven',
+		shortBio: 'Tekent met inkt en houtskool, lijn na lijn, tot er een beweging ontstaat.',
+		bio: [
+			'Sanne Dewulf maakt tekeningen uit honderden fijne lijnen, getrokken in één beweging. Haar Lijnstudies en de reeks Wolkenatlas gaan over ritme, herhaling en de kleine afwijkingen van de hand. (Demo-kunstenaar)'
+		],
+		isDemo: true
 	}
 ];
 

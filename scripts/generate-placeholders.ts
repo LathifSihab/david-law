@@ -11,7 +11,8 @@ import { fileURLToPath } from 'node:url';
 
 type Rng = () => number;
 type Palette = readonly string[];
-type Style = 'bands' | 'fields' | 'collage' | 'concentric' | 'grid' | 'gradient';
+type Style =
+	'bands' | 'fields' | 'collage' | 'concentric' | 'grid' | 'gradient' | 'arcs' | 'tonal' | 'lines';
 
 interface Spec {
 	file: string; // must match the image src in src/lib/data/artworks.ts
@@ -29,7 +30,11 @@ const PALETTES = {
 	rust: ['#2f2421', '#6f3f2c', '#a46a45', '#c9a275', '#e4d8c2'],
 	dusk: ['#25222c', '#433d52', '#6d6680', '#a59cae', '#d8cfcc'],
 	indigo: ['#1a2333', '#283f5e', '#4b6a90', '#8ea5bd', '#d2d8dc'],
-	ochre: ['#2a2622', '#5a4a30', '#9a7a3e', '#c9a85f', '#e6dcc4']
+	ochre: ['#2a2622', '#5a4a30', '#9a7a3e', '#c9a85f', '#e6dcc4'],
+	sand: ['#3a2b22', '#7a4b2e', '#b8743f', '#d9a66b', '#ecdcc0'],
+	terracotta: ['#33221f', '#8a3f2a', '#c0673d', '#e0a070', '#efe0c8'],
+	grey: ['#1e1f21', '#3a3c3f', '#62656a', '#9a9da1', '#d4d5d3'],
+	ink: ['#1f2329', '#3b4250', '#6b7383', '#b7b2a6', '#ebe5d8']
 } as const satisfies Record<string, Palette>;
 
 // Long side 1200px. Ratios follow the real dimensions in docs/03 (width × height).
@@ -121,6 +126,103 @@ const SPECS: Spec[] = [
 		style: 'bands',
 		palette: PALETTES.tide,
 		seed: 111
+	},
+	// Task 3b: marketplace inventory (docs/03, D-12 to D-23)
+	{
+		file: 'noor-el-amrani-woestijnkleur-1',
+		width: 1200,
+		height: 1200,
+		style: 'arcs',
+		palette: PALETTES.sand,
+		seed: 612
+	},
+	{
+		file: 'noor-el-amrani-woestijnkleur-2',
+		width: 1200,
+		height: 1200,
+		style: 'arcs',
+		palette: PALETTES.terracotta,
+		seed: 613
+	},
+	{
+		file: 'noor-el-amrani-middaghitte',
+		width: 1200,
+		height: 857,
+		style: 'arcs',
+		palette: PALETTES.sand,
+		seed: 614
+	},
+	{
+		file: 'pieter-jan-lauwers-haven-05-40',
+		width: 960,
+		height: 1200,
+		style: 'tonal',
+		palette: PALETTES.grey,
+		seed: 715
+	},
+	{
+		file: 'pieter-jan-lauwers-dok-7',
+		width: 1200,
+		height: 840,
+		style: 'tonal',
+		palette: PALETTES.grey,
+		seed: 716
+	},
+	{
+		file: 'pieter-jan-lauwers-mist-over-de-schelde',
+		width: 1200,
+		height: 800,
+		style: 'tonal',
+		palette: PALETTES.grey,
+		seed: 717
+	},
+	{
+		file: 'sanne-dewulf-lijnstudie-4',
+		width: 900,
+		height: 1200,
+		style: 'lines',
+		palette: PALETTES.ink,
+		seed: 818
+	},
+	{
+		file: 'sanne-dewulf-lijnstudie-9',
+		width: 900,
+		height: 1200,
+		style: 'lines',
+		palette: PALETTES.ink,
+		seed: 819
+	},
+	{
+		file: 'sanne-dewulf-wolkenatlas',
+		width: 840,
+		height: 1200,
+		style: 'lines',
+		palette: PALETTES.ink,
+		seed: 820
+	},
+	{
+		file: 'ward-stoffels-raster-5',
+		width: 1200,
+		height: 1200,
+		style: 'grid',
+		palette: PALETTES.indigo,
+		seed: 421
+	},
+	{
+		file: 'ines-marrot-fragment-23',
+		width: 857,
+		height: 1200,
+		style: 'collage',
+		palette: PALETTES.ochre,
+		seed: 322
+	},
+	{
+		file: 'milan-okafor-peeters-atelier-winter',
+		width: 900,
+		height: 1200,
+		style: 'fields',
+		palette: PALETTES.dusk,
+		seed: 223
 	}
 ];
 
@@ -262,13 +364,74 @@ function gradient(rng: Rng, w: number, h: number, p: Palette): string {
 	return out;
 }
 
+/** A large disc cut by the edge, with a few concentric arcs: heat and low sun. */
+function arcs(rng: Rng, w: number, h: number, p: Palette): string {
+	const horizon = h * between(rng, 0.55, 0.72);
+	let out = `<rect width="${w}" height="${h}" fill="${p[4]}"/>`;
+	const cx = w * between(rng, 0.3, 0.7);
+	const radius = Math.min(w, h) * between(rng, 0.28, 0.38);
+	out += `<circle cx="${r(cx)}" cy="${r(horizon)}" r="${r(radius)}" fill="${p[2]}"/>`;
+	for (let i = 1; i <= 4; i++) {
+		const ar = radius + i * Math.min(w, h) * 0.045;
+		out += `<path d="M${r(cx - ar)} ${r(horizon)} A${r(ar)} ${r(ar)} 0 0 1 ${r(cx + ar)} ${r(horizon)}" fill="none" stroke="${p[i % 2 === 0 ? 1 : 2]}" stroke-width="${r(between(rng, 3, 9))}" opacity="${r(between(rng, 0.5, 0.85))}"/>`;
+	}
+	// Ground drawn last, so the disc sets behind the horizon.
+	out += `<rect y="${r(horizon)}" width="${w}" height="${r(h - horizon)}" fill="${p[3]}"/>`;
+	out += `<rect y="${r(horizon)}" width="${w}" height="${r(Math.max(3, h * 0.006))}" fill="${p[0]}" opacity="0.6"/>`;
+	return out;
+}
+
+/** Stepped greys with one dark architectural block: a monochrome harbour mood. */
+function tonal(rng: Rng, w: number, h: number, p: Palette): string {
+	let out = '';
+	const steps = 5 + Math.floor(rng() * 3);
+	let y = 0;
+	for (let i = 0; i < steps; i++) {
+		const size = i === steps - 1 ? h - y : (h / steps) * between(rng, 0.6, 1.4);
+		const colour = p[Math.min(4, 4 - Math.floor((i / steps) * 4))];
+		out += `<rect y="${r(y)}" width="${w}" height="${r(size + 1)}" fill="${colour}"/>`;
+		y += size;
+		if (y >= h) break;
+	}
+	const bw = w * between(rng, 0.12, 0.3);
+	const bh = h * between(rng, 0.25, 0.45);
+	const bx = w * between(rng, 0.1, 0.9) - bw / 2;
+	out += `<rect x="${r(bx)}" y="${r(h - bh)}" width="${r(bw)}" height="${r(bh)}" fill="${p[0]}"/>`;
+	out += `<rect x="${r(bx + bw)}" y="${r(h - bh * 0.4)}" width="${r(w * 0.25)}" height="${r(bh * 0.4)}" fill="${p[1]}"/>`;
+	return out;
+}
+
+/** Many fine drawn lines on paper, bunching and thinning like a pen study. */
+function lines(rng: Rng, w: number, h: number, p: Palette): string {
+	let out = `<rect width="${w}" height="${h}" fill="${p[4]}"/>`;
+	const count = 38 + Math.floor(rng() * 20);
+	const amp = h * between(rng, 0.03, 0.08);
+	const centre = h * between(rng, 0.35, 0.6);
+	const spread = h * between(rng, 0.25, 0.4);
+	for (let i = 0; i < count; i++) {
+		const y = centre + (i / count - 0.5) * spread * 2;
+		const phase = between(rng, 0, Math.PI * 2);
+		const pts: string[] = [];
+		for (let x = 0; x <= w; x += w / 24) {
+			const yy = y + Math.sin((x / w) * Math.PI * 2 + phase) * amp * (0.5 + i / count);
+			pts.push(`${r(x)} ${r(yy)}`);
+		}
+		const colour = i % 7 === 0 ? p[2] : p[0];
+		out += `<polyline points="${pts.join(' ')}" fill="none" stroke="${colour}" stroke-width="${r(between(rng, 0.6, 1.6))}" opacity="${r(between(rng, 0.45, 0.85))}"/>`;
+	}
+	return out;
+}
+
 const STYLES: Record<Style, (rng: Rng, w: number, h: number, p: Palette) => string> = {
 	bands,
 	fields,
 	collage,
 	concentric,
 	grid,
-	gradient
+	gradient,
+	arcs,
+	tonal,
+	lines
 };
 
 function render(spec: Spec): string {

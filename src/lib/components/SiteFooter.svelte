@@ -46,6 +46,13 @@
 			>
 				{t('nav.contact')}
 			</a>
+			<!-- The import mock is reachable only from here (docs/04 section 7). -->
+			<a
+				href={resolve('/admin/import')}
+				class="block py-1.5 type-small text-aluminium hover:text-paper hover:underline hover:underline-offset-4"
+			>
+				{t('nav.admin')}
+			</a>
 			<p class="type-small text-aluminium">{t('footer.rights')}</p>
 		</div>
 	</div>

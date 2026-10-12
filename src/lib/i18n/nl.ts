@@ -16,7 +16,8 @@ export const nl = {
 		toastCheckout: 'In de echte versie ga je nu naar de beveiligde betaling.',
 		toastInquiry:
 			'Je aanvraag is verstuurd (demo). In de echte versie ontvang je een bevestiging per e-mail.',
-		toastImport: '{count} werken geïmporteerd (demo). Er is niets opgeslagen.'
+		toastImport: '{count} werken geïmporteerd (demo). Er is niets opgeslagen.',
+		toastImportOne: '1 werk geïmporteerd (demo). Er is niets opgeslagen.'
 	},
 
 	nav: {
@@ -226,7 +227,11 @@ export const nl = {
 		missingTitle: 'Titel ontbreekt',
 		import: 'Importeren',
 		template: 'Download voorbeeldbestand',
-		errorRead: 'Dit bestand kon niet gelezen worden. Gebruik een .xlsx- of .csv-bestand.'
+		errorRead: 'Dit bestand kon niet gelezen worden. Gebruik een .xlsx- of .csv-bestand.',
+		summaryOne: '1 werk klaar om te importeren, {warn} met waarschuwingen',
+		check: 'Controle',
+		file: 'Bestand: {name}',
+		ignored: 'Niet geïmporteerd (interne kolommen): {names}'
 	},
 
 	notFound: {

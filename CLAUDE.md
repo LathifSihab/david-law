@@ -8,7 +8,7 @@ The full spec is in `docs/`. Read `docs/01` to `docs/08` before writing code. Wo
 - SvelteKit 3 (Vite 8) with **Svelte 5 runes** (`$state`, `$derived`, `$props`, `$effect`). No legacy `export let` or `$:` syntax.
 - TypeScript, strict mode.
 - Tailwind CSS v4 via `@tailwindcss/vite`. Design tokens live in `src/app.css` under `@theme`.
-- `@sveltejs/adapter-static`, with every route prerendered (`export const prerender = true` in the root `+layout.ts`). Kit 3 has no `svelte.config.js`: the adapter and compiler options live in `vite.config.ts`, and `src/lib` is imported via the `#lib` alias (package.json `imports`).
+- `@sveltejs/adapter-static`, with every route prerendered (`export const prerender = true` in the root `+layout.ts`). Kit 3 has no `svelte.config.js`: the adapter and compiler options live in `vite.config.ts`, and `src/lib` is imported via the `#lib` alias (package.json `imports`). That alias doesn't add extensions, so always write them: `#lib/i18n/index.js`, `#lib/utils/format.js`, `#lib/components/Button.svelte`.
 - Fonts: self-hosted through `@fontsource` packages (no Google Fonts requests).
 - No backend, no database, no auth, no payments. All data is static TypeScript in `src/lib/data/`.
 

@@ -1,1 +1,175 @@
 @import 'tailwindcss';
+
+/* Design tokens: docs/02-design-system.md */
+@theme {
+	/* Only the gallery palette exists. Tailwind's default colours are removed on purpose. */
+	--color-*: initial;
+	--color-wall: #1a1b1d;
+	--color-wall-deep: #121315;
+	--color-plinth: #24262a;
+	--color-aluminium: #a9aeb4;
+	--color-paper: #eceae5;
+	--color-spot: #f3d9a4; /* spotlight glow and focus rings only */
+	--color-live: #e5a13a; /* running auction state only */
+	--color-demo: #7f8a9a;
+	--color-hairline: rgb(169 174 180 / 0.25); /* 1px aluminium at 25% */
+
+	--font-display: 'Bodoni Moda Variable', 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+	--font-sans: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', system-ui, sans-serif;
+
+	/* Type scale (ratio ~1.333, base 16px). Use the type-* utilities below for full roles. */
+	--text-display: clamp(2.75rem, 6vw, 5rem);
+	--text-display--line-height: 1.02;
+	--text-h1: clamp(2.25rem, 4vw, 3.25rem);
+	--text-h1--line-height: 1.08;
+	--text-h2: 1.75rem;
+	--text-h2--line-height: 1.15;
+	--text-h3: 1.25rem;
+	--text-h3--line-height: 1.3;
+	--text-body: 1rem;
+	--text-body--line-height: 1.6;
+	--text-small: 0.875rem;
+	--text-small--line-height: 1.5;
+	--text-price: 1.125rem;
+	--text-price--line-height: 1.3;
+
+	--radius-control: 2px; /* inputs and buttons only; artworks have hard edges */
+
+	--container-content: 1320px;
+	--container-measure: 68ch;
+	--container-sidebar: 260px;
+
+	--spacing-gutter: clamp(1rem, 4vw, 3rem);
+	--spacing-section: clamp(4rem, 10vw, 8rem);
+
+	--ease-gallery: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Type roles */
+@utility type-display {
+	font-family: var(--font-display);
+	font-size: var(--text-display);
+	line-height: var(--text-display--line-height);
+	font-weight: 400;
+	font-optical-sizing: auto;
+}
+@utility type-h1 {
+	font-family: var(--font-display);
+	font-size: var(--text-h1);
+	line-height: var(--text-h1--line-height);
+	font-weight: 400;
+	font-optical-sizing: auto;
+}
+@utility type-h2 {
+	font-family: var(--font-display);
+	font-size: var(--text-h2);
+	line-height: var(--text-h2--line-height);
+	font-weight: 400;
+	font-optical-sizing: auto;
+}
+@utility type-h3 {
+	font-family: var(--font-display);
+	font-size: var(--text-h3);
+	line-height: var(--text-h3--line-height);
+	font-weight: 500;
+	font-optical-sizing: auto;
+}
+@utility type-body {
+	font-family: var(--font-sans);
+	font-size: var(--text-body);
+	line-height: var(--text-body--line-height);
+	font-weight: 400;
+}
+@utility type-small {
+	font-family: var(--font-sans);
+	font-size: var(--text-small);
+	line-height: var(--text-small--line-height);
+	font-weight: 400;
+}
+@utility type-price {
+	font-family: var(--font-sans);
+	font-size: var(--text-price);
+	line-height: var(--text-price--line-height);
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Page width with side gutters */
+@utility shell {
+	width: 100%;
+	max-width: var(--container-content);
+	margin-inline: auto;
+	padding-inline: var(--spacing-gutter);
+}
+
+/* The spot-lit wall behind an artwork */
+@utility spotlight {
+	background:
+		radial-gradient(ellipse at 50% 40%, rgb(243 217 164 / 0.1), transparent 60%),
+		var(--color-wall-deep);
+}
+
+@layer base {
+	html {
+		background-color: var(--color-wall);
+		color: var(--color-paper);
+		color-scheme: dark;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
+
+	body {
+		min-height: 100dvh;
+		background-color: var(--color-wall);
+		color: var(--color-paper);
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+		line-height: var(--text-body--line-height);
+	}
+
+	/* Focus ring on everything: 2px spot outline, 3px offset */
+	:focus-visible {
+		outline: 2px solid var(--color-spot);
+		outline-offset: 3px;
+	}
+
+	::selection {
+		background-color: rgb(243 217 164 / 0.3);
+		color: var(--color-paper);
+	}
+
+	/* Numbers never jitter */
+	time,
+	[data-numeric] {
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* No page scroll behind an open modal dialog */
+	html:has(dialog[open]:modal) {
+		overflow: hidden;
+	}
+}
+
+@keyframes lights-on {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Reduced motion: no fades, instant state changes */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		animation-delay: 0ms !important;
+		transition-duration: 0.01ms !important;
+		transition-delay: 0ms !important;
+		scroll-behavior: auto !important;
+	}
+}

@@ -4,6 +4,7 @@
 	import '@fontsource-variable/schibsted-grotesk/wght.css';
 	import '../app.css';
 	import favicon from '#lib/assets/favicon.svg';
+	import Toast from '#lib/components/Toast.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
@@ -14,3 +15,5 @@
 </svelte:head>
 
 {@render children()}
+
+<Toast />

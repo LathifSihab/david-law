@@ -20,6 +20,15 @@
 	--color-night: #101218; /* hero banner and footer */
 	--color-night-muted: #a6adbb; /* secondary text on night (8.3:1) */
 
+	/* Index-page heroes: one world per page (src/lib/components/hero) */
+	--color-ember: #1d1310; /* veilingen: warm auction-room dark */
+	--color-ember-muted: #cdb9ab; /* secondary text on ember (9.8:1) */
+	--color-flame: #f2a46b; /* accents on ember (8.6:1) */
+	--color-paper: #f3eee6; /* collectie: archive wall */
+	--color-moss: #18221e; /* kunstenaars: studio green */
+	--color-moss-muted: #b3c0b8; /* secondary text on moss (9.4:1) */
+	--color-bone: #ece2cf; /* accents on moss (13:1) */
+
 	--font-display: 'Bodoni Moda Variable', 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
 	--font-sans: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', system-ui, sans-serif;
 
@@ -156,7 +165,7 @@
 	}
 
 	/* On dark and brand surfaces the ring turns white to stay visible. */
-	:where(.bg-night, .bg-brand, .bg-demo) :focus-visible {
+	:where(.bg-night, .bg-brand, .bg-demo, .bg-ember, .bg-moss) :focus-visible {
 		outline-color: var(--color-canvas);
 	}
 

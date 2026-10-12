@@ -5,6 +5,7 @@
 	import { page } from '$app/state';
 	import { config } from '#lib/config.js';
 	import { t } from '#lib/i18n/index.js';
+	import { LIMITS, sanitizeText } from '#lib/utils/input.js';
 	import CloseIcon from './CloseIcon.svelte';
 
 	const links = [
@@ -40,7 +41,7 @@
 
 	async function submitSearch(event: SubmitEvent) {
 		event.preventDefault();
-		const q = query.trim();
+		const q = sanitizeText(query, LIMITS.search);
 		searchOpen = false;
 		query = '';
 		await goto(q ? resolve(`/collectie?q=${encodeURIComponent(q)}`) : resolve('/collectie'));
@@ -141,6 +142,7 @@
 					id="site-search-input"
 					type="search"
 					name="q"
+					maxlength={LIMITS.search}
 					autocomplete="off"
 					placeholder={t('nav.searchPlaceholder')}
 					class="h-12 min-w-0 flex-1 rounded-control border border-hairline bg-plinth px-4 text-paper placeholder:text-aluminium"

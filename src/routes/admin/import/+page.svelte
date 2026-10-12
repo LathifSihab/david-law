@@ -5,7 +5,11 @@
 <script lang="ts">
 	import { t, plural } from '#lib/i18n/index.js';
 	import { formatPrice } from '#lib/utils/format.js';
+	import { sanitizeText } from '#lib/utils/input.js';
 	import {
+		MAX_FILE_BYTES,
+		MAX_ROWS,
+		hasAcceptedExtension,
 		mapSheet,
 		normaliseStatus,
 		parsePrice,
@@ -37,10 +41,28 @@
 		if (!file) return;
 		error = '';
 		result = null;
-		fileName = file.name;
+		fileName = sanitizeText(file.name, 120);
+		// Checked before reading a single byte: type by extension, then size.
+		if (!hasAcceptedExtension(file.name)) {
+			error = t('admin.errorRead');
+			return;
+		}
+		if (file.size > MAX_FILE_BYTES) {
+			error = t('admin.errorSize');
+			return;
+		}
 		try {
 			const XLSX = await loadSheetJs();
-			const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+			// Values only: no formulas or HTML are parsed, and parsing stops after MAX_ROWS rows.
+			// CSV is decoded as UTF-8 here: SheetJS would read a CSV without a byte-order mark as
+			// Latin-1 and garble accents ("Inès" → "InÃ¨s").
+			const isCsv = file.name.toLowerCase().endsWith('.csv');
+			const workbook = XLSX.read(isCsv ? await file.text() : await file.arrayBuffer(), {
+				type: isCsv ? 'string' : 'array',
+				sheetRows: MAX_ROWS + 5,
+				cellFormula: false,
+				cellHTML: false
+			});
 			const sheet = workbook.Sheets[workbook.SheetNames[0]];
 			if (!sheet) throw new Error('No sheets');
 			const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
@@ -164,7 +186,7 @@
 				{t('admin.preview', { count: Math.min(PREVIEW_ROWS, result.rows.length) })}
 			</h2>
 			<div class="mt-4 overflow-x-auto">
-				<table class="w-full min-w-[56rem] text-left type-small">
+				<table class="w-full min-w-4xl text-left type-small">
 					<thead class="text-aluminium">
 						<tr class="border-b border-hairline">
 							<th scope="col" class="py-3 pr-4 font-normal">ID</th>

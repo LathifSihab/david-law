@@ -24,6 +24,7 @@
 	import ArtworkTile from '#lib/components/ArtworkTile.svelte';
 	import SectionHeading from '#lib/components/SectionHeading.svelte';
 	import { toast } from '#lib/components/toasts.svelte.js';
+	import { LIMITS, sanitizeText } from '#lib/utils/input.js';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -43,11 +44,31 @@
 		inquiryOpen = true;
 	}
 
+	// Practical e-mail check on top of the browser's type="email" validation.
+	const EMAIL = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[a-z]{2,}$/i;
+
+	/**
+	 * Validates like a real form would (a name that isn't only spaces or invisible characters, a
+	 * plausible e-mail address), then discards everything: nothing is sent or stored (docs/07).
+	 */
 	function submitInquiry(event: SubmitEvent) {
 		event.preventDefault();
-		(event.currentTarget as HTMLFormElement).reset(); // not stored anywhere
+		const form = event.currentTarget as HTMLFormElement;
+		const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+		const name = sanitizeText(field('name').value, LIMITS.name);
+		const email = sanitizeText(field('email').value, LIMITS.email);
+		field('name').setCustomValidity(name ? '' : t('artwork.inquiryNameInvalid'));
+		field('email').setCustomValidity(EMAIL.test(email) ? '' : t('artwork.inquiryEmailInvalid'));
+		if (!form.reportValidity()) return;
+		form.reset();
 		inquiryOpen = false;
 		toast.show(t('demo.toastInquiry'));
+	}
+
+	/** Typing again clears a custom validation message. */
+	function clearValidity(event: Event) {
+		const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+		target.setCustomValidity?.('');
 	}
 
 	function checkout() {
@@ -285,13 +306,14 @@
 	bind:open={inquiryOpen}
 	title={inquiry === 'price' ? t('artwork.inquiryTitle') : t('artwork.ask')}
 >
-	<form class="space-y-4" onsubmit={submitInquiry}>
+	<form class="space-y-4" onsubmit={submitInquiry} oninput={clearValidity}>
 		<p class="type-small text-aluminium">{artist?.name}, <i>{artwork.title}</i></p>
 		<label class="block space-y-1.5">
 			<span class="type-small">{t('artwork.inquiryName')}</span>
 			<input
 				name="name"
 				autocomplete="name"
+				maxlength={LIMITS.name}
 				required
 				class="block h-11 w-full rounded-control border border-hairline bg-wall px-3 text-paper"
 			/>
@@ -302,6 +324,8 @@
 				name="email"
 				type="email"
 				autocomplete="email"
+				maxlength={LIMITS.email}
+				spellcheck="false"
 				required
 				class="block h-11 w-full rounded-control border border-hairline bg-wall px-3 text-paper"
 			/>
@@ -311,6 +335,7 @@
 			<textarea
 				name="message"
 				rows="4"
+				maxlength={LIMITS.message}
 				class="block w-full rounded-control border border-hairline bg-wall px-3 py-2 text-paper"
 			></textarea>
 		</label>

@@ -1,5 +1,16 @@
 import { getArtist } from '#lib/data/artists.js';
 import { getArtworkById } from '#lib/data/artworks.js';
+import { LIMITS, sanitizeText } from '#lib/utils/input.js';
+
+/** Upload limits: checked before parsing, so a huge file can't freeze the browser tab. */
+export const MAX_FILE_BYTES = 5 * 1024 * 1024;
+export const MAX_ROWS = 5000;
+export const ACCEPTED_EXTENSIONS = ['.xlsx', '.xls', '.csv'] as const;
+
+export function hasAcceptedExtension(fileName: string): boolean {
+	const name = fileName.toLowerCase();
+	return ACCEPTED_EXTENSIONS.some((ext) => name.endsWith(ext));
+}
 
 /*
  * Excel import mock (docs/04 section 7, column mapping in docs/03). Pure functions: the page reads
@@ -89,8 +100,9 @@ function validate(values: Partial<Record<ColumnKey, string>>): Issue[] {
  * the first five rows: then it isn't a catalogue file.
  */
 export function mapSheet(sheet: unknown[][]): ImportResult | null {
+	// Every cell is untrusted: strip control/invisible characters and cap its length.
 	const asText = (cell: unknown) =>
-		cell === null || cell === undefined ? '' : String(cell).trim();
+		cell === null || cell === undefined ? '' : sanitizeText(String(cell), LIMITS.cell);
 
 	const headerIndex = sheet
 		.slice(0, 5)
@@ -104,7 +116,7 @@ export function mapSheet(sheet: unknown[][]): ImportResult | null {
 	const ignored = header.filter((h, i) => h && !columns[i]);
 
 	const rows = sheet
-		.slice(headerIndex + 1)
+		.slice(headerIndex + 1, headerIndex + 1 + MAX_ROWS)
 		.map((row) => row.map(asText))
 		.filter((row) => row.some(Boolean))
 		.map((row) => {
@@ -147,5 +159,7 @@ export function templateRows(): string[][] {
 		status: artwork.status.replace('-', ' '),
 		images: folder
 	};
-	return [header, IMPORT_COLUMNS.map((c) => example[c.key])];
+	// Formula-injection guard: a cell starting with = + - @ would run as a formula in Excel.
+	const safe = (value: string) => (/^[=+\-@\t\r]/.test(value) ? `'${value}` : value);
+	return [header, IMPORT_COLUMNS.map((c) => safe(example[c.key]))];
 }

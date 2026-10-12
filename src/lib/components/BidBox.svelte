@@ -16,6 +16,7 @@
 		isReserveMet,
 		placeBid
 	} from '#lib/data/auction-state.svelte.js';
+	import { parseAmount, sanitizeAmountInput } from '#lib/utils/input.js';
 	import { toast } from './toasts.svelte.js';
 	import Countdown from './Countdown.svelte';
 	import Button from './Button.svelte';
@@ -34,9 +35,22 @@
 	let closed = $state(false);
 	const open = $derived(isLive && !closed);
 
-	// The input holds whatever is typed; it resets to the new minimum after every bid.
-	let input = $derived(String(min));
-	const amount = $derived(Number(input.replace(/\D/g, '')) || 0);
+	/** 875 → "875", 925.5 → "925,50" (Dutch decimal comma). */
+	const toInputAmount = (n: number) =>
+		Number.isInteger(n) ? String(n) : n.toFixed(2).replace('.', ',');
+
+	// The input holds what is typed (digits and one decimal separator only); it resets to the new
+	// minimum after every bid. Anything that doesn't parse strictly counts as 0, so it's too low.
+	let input = $derived(toInputAmount(min));
+	const amount = $derived(parseAmount(input) ?? 0);
+
+	function onAmountInput(event: Event & { currentTarget: HTMLInputElement }) {
+		const field = event.currentTarget;
+		const clean = sanitizeAmountInput(field.value);
+		if (field.value !== clean) field.value = clean; // typed or pasted letters never appear
+		input = clean;
+		error = '';
+	}
 
 	let error = $state('');
 	let confirming = $state<number | null>(null);
@@ -171,11 +185,12 @@
 					<span class="pl-4 text-aluminium" aria-hidden="true">€</span>
 					<input
 						id="bid-amount"
-						bind:value={input}
-						oninput={() => (error = '')}
+						value={input}
+						oninput={onAmountInput}
 						type="text"
-						inputmode="numeric"
+						inputmode="decimal"
 						autocomplete="off"
+						spellcheck="false"
 						disabled={!open}
 						aria-invalid={error ? 'true' : undefined}
 						aria-describedby="bid-hint{error ? ' bid-error' : ''}"
@@ -198,7 +213,7 @@
 							disabled={!open}
 							class="min-h-11 rounded-control border border-hairline px-2 font-medium hover:border-paper disabled:cursor-not-allowed disabled:opacity-50"
 							onclick={() => {
-								input = String(value);
+								input = toInputAmount(value);
 								requestConfirm(value);
 							}}
 						>

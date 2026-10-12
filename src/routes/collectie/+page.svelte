@@ -5,6 +5,8 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { t, plural } from '#lib/i18n/index.js';
+	import { config } from '#lib/config.js';
+	import { LIMITS, sanitizeText } from '#lib/utils/input.js';
 	import { artworks } from '#lib/data/artworks.js';
 	import { getArtist } from '#lib/data/artists.js';
 	import {
@@ -64,7 +66,10 @@
 
 	function onSearchInput() {
 		clearTimeout(searchTimer);
-		searchTimer = setTimeout(() => navigate({ ...filters, q: query }, true), 250);
+		searchTimer = setTimeout(
+			() => navigate({ ...filters, q: sanitizeText(query, LIMITS.search) }, true),
+			250
+		);
 	}
 
 	// Removable chips for every active filter.
@@ -100,7 +105,7 @@
 				? [
 						{
 							id: 'min',
-							label: `${t('catalogue.priceMin')} ${f.min}`,
+							label: `${t('catalogue.priceMin')} ${f.min.toLocaleString(config.locale)}`,
 							next: { ...f, min: undefined }
 						}
 					]
@@ -109,7 +114,7 @@
 				? [
 						{
 							id: 'max',
-							label: `${t('catalogue.priceMax')} ${f.max}`,
+							label: `${t('catalogue.priceMax')} ${f.max.toLocaleString(config.locale)}`,
 							next: { ...f, max: undefined }
 						}
 					]
@@ -143,6 +148,7 @@
 					bind:value={query}
 					oninput={onSearchInput}
 					type="search"
+					maxlength={LIMITS.search}
 					placeholder={t('nav.searchPlaceholder')}
 					class="block h-11 w-full rounded-control border border-hairline bg-plinth px-4 text-paper placeholder:text-aluminium"
 				/>

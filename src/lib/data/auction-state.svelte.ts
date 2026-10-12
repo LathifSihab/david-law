@@ -120,6 +120,18 @@ function addBid(lot: AuctionLot, bid: Bid): { extended: boolean } {
  * bid box can show its own inline error. Returns whether the soft close extended the lot.
  */
 export function placeBid(lot: AuctionLot, amountEur: number): { extended: boolean } {
+	// Last line of defence, whatever the caller: a finite amount in whole cents, at least the
+	// minimum, on an open lot. Anything else is ignored.
+	const cents = Math.round(amountEur * 100);
+	if (
+		!Number.isFinite(amountEur) ||
+		cents / 100 !== amountEur ||
+		amountEur < getMinNextBid(lot) ||
+		amountEur > 999_999_999 ||
+		!canBid(lot)
+	) {
+		return { extended: false };
+	}
 	const result = addBid(lot, {
 		amountEur,
 		bidderLabel: t('auction.you'),

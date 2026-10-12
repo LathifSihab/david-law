@@ -127,6 +127,8 @@ export const nl = {
 		inquiryEmail: 'E-mailadres',
 		inquiryMessage: 'Bericht',
 		inquirySend: 'Aanvraag versturen',
+		inquiryNameInvalid: 'Vul je naam in.',
+		inquiryEmailInvalid: 'Vul een geldig e-mailadres in.',
 		trust: {
 			certificate: 'Certificaat van echtheid inbegrepen',
 			shipping: 'Zorgvuldig verpakt en verzekerd verzonden',
@@ -228,6 +230,7 @@ export const nl = {
 		import: 'Importeren',
 		template: 'Download voorbeeldbestand',
 		errorRead: 'Dit bestand kon niet gelezen worden. Gebruik een .xlsx- of .csv-bestand.',
+		errorSize: 'Dit bestand is te groot. Gebruik een bestand tot 5 MB.',
 		summaryOne: '1 werk klaar om te importeren, {warn} met waarschuwingen',
 		check: 'Controle',
 		file: 'Bestand: {name}',

@@ -2,6 +2,7 @@ import type { Artwork, ArtworkStatus } from '#lib/types.js';
 import { getArtist } from '#lib/data/artists.js';
 import { getAuction } from '#lib/data/auctions.js';
 import { getCurrentBid } from '#lib/data/auction-state.svelte.js';
+import { LIMITS, parseAmount, sanitizeText } from '#lib/utils/input.js';
 
 /*
  * Catalogue logic (docs/04 section 2): grouping, filtering, sorting and the URL format.
@@ -248,11 +249,8 @@ function toParam<K extends string>(keys: K[], mapping: Mapping<K>): string {
 		.join(',');
 }
 
-function toNumber(raw: string | null): number | undefined {
-	if (raw === null || raw.trim() === '') return undefined;
-	const n = Number(raw);
-	return Number.isFinite(n) && n >= 0 ? n : undefined;
-}
+/** URL amounts are untrusted: strict digits with an optional 1–2 decimal part (no 1e3, 0x10, -5). */
+const toNumber = (raw: string | null) => parseAmount(raw);
 
 const STATUS_MAPPING: Mapping<ArtworkStatus> = STATUSES.map((s) => ({ key: s, param: s }));
 
@@ -265,7 +263,7 @@ export function parseFilters(params: Pick<URLSearchParams, 'get'>): Filters {
 		orientation: fromParams(params.get('orientatie'), ORIENTATIONS),
 		min: toNumber(params.get('min')),
 		max: toNumber(params.get('max')),
-		q: params.get('q')?.trim() ?? '',
+		q: sanitizeText(params.get('q') ?? '', LIMITS.search),
 		sort: fromParams(params.get('sort'), SORTS)[0] ?? 'newest'
 	};
 }

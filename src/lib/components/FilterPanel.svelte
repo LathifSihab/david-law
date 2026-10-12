@@ -18,6 +18,7 @@
 		surnameKey,
 		type Filters
 	} from '#lib/utils/catalogue.js';
+	import { parseAmount, sanitizeAmountInput } from '#lib/utils/input.js';
 
 	interface Props {
 		works: Artwork[];
@@ -43,9 +44,15 @@
 		return list.includes(key) ? list.filter((k) => k !== key) : [...list, key];
 	}
 
-	function priceValue(raw: string): number | undefined {
-		const n = Number(raw);
-		return raw.trim() !== '' && Number.isFinite(n) && n >= 0 ? n : undefined;
+	/** 500 → "500", 12.5 → "12,50" (Dutch decimal comma). */
+	const toInput = (n: number | undefined) =>
+		n === undefined ? '' : Number.isInteger(n) ? String(n) : n.toFixed(2).replace('.', ',');
+
+	/** Only digits and one decimal separator ever reach the field, typed or pasted. */
+	function onPriceInput(event: Event & { currentTarget: HTMLInputElement }) {
+		const field = event.currentTarget;
+		const clean = sanitizeAmountInput(field.value);
+		if (field.value !== clean) field.value = clean;
 	}
 
 	type Option = { key: string; label: string; count: number; checked: boolean; toggle: () => void };
@@ -145,24 +152,26 @@
 					<label class="space-y-1.5">
 						<span class="type-small text-aluminium">{t('catalogue.priceMin')}</span>
 						<input
-							type="number"
-							inputmode="numeric"
-							min="0"
-							step="50"
-							value={filters.min ?? ''}
-							onchange={(e) => onchange({ ...filters, min: priceValue(e.currentTarget.value) })}
+							type="text"
+							inputmode="decimal"
+							autocomplete="off"
+							spellcheck="false"
+							value={toInput(filters.min)}
+							oninput={onPriceInput}
+							onchange={(e) => onchange({ ...filters, min: parseAmount(e.currentTarget.value) })}
 							class="block h-11 w-full rounded-control border border-hairline bg-plinth px-3 text-paper tabular-nums"
 						/>
 					</label>
 					<label class="space-y-1.5">
 						<span class="type-small text-aluminium">{t('catalogue.priceMax')}</span>
 						<input
-							type="number"
-							inputmode="numeric"
-							min="0"
-							step="50"
-							value={filters.max ?? ''}
-							onchange={(e) => onchange({ ...filters, max: priceValue(e.currentTarget.value) })}
+							type="text"
+							inputmode="decimal"
+							autocomplete="off"
+							spellcheck="false"
+							value={toInput(filters.max)}
+							oninput={onPriceInput}
+							onchange={(e) => onchange({ ...filters, max: parseAmount(e.currentTarget.value) })}
 							class="block h-11 w-full rounded-control border border-hairline bg-plinth px-3 text-paper tabular-nums"
 						/>
 					</label>

@@ -1,15 +1,21 @@
 import { config } from '#lib/config.js';
 import { t } from '#lib/i18n/index.js';
 
-const priceFormatter = new Intl.NumberFormat(config.locale, {
+const wholeEuros = new Intl.NumberFormat(config.locale, {
 	style: 'currency',
 	currency: 'EUR',
 	maximumFractionDigits: 0
 });
+const withCents = new Intl.NumberFormat(config.locale, {
+	style: 'currency',
+	currency: 'EUR',
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 2
+});
 
-/** 850 → "€ 850", 1450 → "€ 1.450" */
+/** 850 → "€ 850", 1450 → "€ 1.450", 900.5 → "€ 900,50" (cents only when there are any). */
 export function formatPrice(amountEur: number): string {
-	return priceFormatter.format(amountEur);
+	return Number.isInteger(amountEur) ? wholeEuros.format(amountEur) : withCents.format(amountEur);
 }
 
 const cmFormatter = new Intl.NumberFormat(config.locale, { maximumFractionDigits: 1 });

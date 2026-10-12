@@ -21,7 +21,26 @@ export default defineConfig({
 			paths: { relative: false },
 			// Inline the stylesheet (~44 kB, ~8 kB gzipped) so it doesn't block the first paint (Lighthouse:
 			// it delayed the hero image, our LCP element, by ~1.5 s).
-			inlineStyleThreshold: 60_000
+			inlineStyleThreshold: 60_000,
+			// Content Security Policy (defence in depth against script injection). Prerendered pages
+			// get it as a <meta> tag; SvelteKit adds hashes for its own inline hydration script, so
+			// no other inline or third-party script can run. Styles allow 'unsafe-inline' for Svelte
+			// transitions and computed style attributes. frame-ancestors can't live in a <meta> tag:
+			// it's sent as a header by scripts/vercel-output.ts.
+			csp: {
+				mode: 'hash',
+				directives: {
+					'default-src': ['self'],
+					'script-src': ['self'],
+					'style-src': ['self', 'unsafe-inline'],
+					'img-src': ['self', 'data:', 'blob:'],
+					'font-src': ['self'],
+					'connect-src': ['self'],
+					'object-src': ['none'],
+					'base-uri': ['self'],
+					'form-action': ['self']
+				}
+			}
 		})
 	]
 });

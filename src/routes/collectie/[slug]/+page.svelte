@@ -2,7 +2,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { t, plural } from '#lib/i18n/index.js';
-	import type { Artwork } from '#lib/types.js';
 	import { config } from '#lib/config.js';
 	import { artworks, getMainImage } from '#lib/data/artworks.js';
 	import { getArtist } from '#lib/data/artists.js';
@@ -13,10 +12,11 @@
 		getEndsAt,
 		getStartsAt
 	} from '#lib/data/auction-state.svelte.js';
-	import { formatDimensions, formatLotNumber, formatPrice } from '#lib/utils/format.js';
+	import { formatLotNumber, formatPrice } from '#lib/utils/format.js';
 	import { getRelatedWorks } from '#lib/utils/catalogue.js';
 	import { TILE_ROW, TILE_ROW_ITEM } from '#lib/utils/layout.js';
 	import Gallery from '#lib/components/Gallery.svelte';
+	import ArtworkInfo from '#lib/components/ArtworkInfo.svelte';
 	import Button from '#lib/components/Button.svelte';
 	import Dialog from '#lib/components/Dialog.svelte';
 	import DemoBadge from '#lib/components/DemoBadge.svelte';
@@ -32,37 +32,6 @@
 	const artist = $derived(getArtist(artwork.artistSlug));
 	const lot = $derived(artwork.auctionSlug ? getAuction(artwork.auctionSlug) : undefined);
 	const related = $derived(getRelatedWorks(artwork, artworks));
-
-	/** Specification rows; rows without a value are skipped (docs/04). */
-	function specRows(a: Artwork): [string, string][] {
-		const edition = a.edition
-			? a.edition.label && a.edition.artistProofs
-				? t('artwork.editionFull', {
-						label: a.edition.label,
-						size: a.edition.size,
-						ap: a.edition.artistProofs
-					})
-				: a.edition.label
-					? t('artwork.editionLabelled', { label: a.edition.label, size: a.edition.size })
-					: t('artwork.editionSimple', { size: a.edition.size })
-			: t('artwork.unique');
-		const rows: [string, string | undefined][] = [
-			[t('artwork.spec.artist'), artist?.name],
-			[t('artwork.spec.title'), a.title],
-			[t('artwork.spec.series'), a.series],
-			[t('artwork.spec.year'), String(a.year)],
-			[t('artwork.spec.technique'), a.technique],
-			[t('artwork.spec.support'), a.support],
-			[t('artwork.spec.dimensions'), formatDimensions(a)],
-			[t('artwork.spec.edition'), edition],
-			[
-				t('artwork.spec.signed'),
-				a.signed ? (a.signatureNote ?? t('artwork.spec.yes')) : t('artwork.spec.no')
-			],
-			[t('artwork.spec.certificate'), a.certificate ? t('artwork.spec.yes') : t('artwork.spec.no')]
-		];
-		return rows.filter((row): row is [string, string] => Boolean(row[1]));
-	}
 
 	// Dialogs. Nothing is bought or sent: they end in a demo toast (CLAUDE.md rule 7, docs/07).
 	let buyOpen = $state(false);
@@ -261,51 +230,7 @@
 		</div>
 	</div>
 
-	<!-- Over dit werk / Specificaties -->
-	<div class="mt-section grid gap-12 border-t border-hairline pt-12 md:grid-cols-2 md:gap-16">
-		<section aria-labelledby="about-work">
-			<h2 id="about-work" class="type-h2">{t('artwork.aboutWork')}</h2>
-			<p class="mt-5 max-w-measure">{artwork.description}</p>
-			{#if artwork.details?.length}
-				<ul class="mt-6 max-w-measure divide-y divide-hairline border-y border-hairline">
-					{#each artwork.details as detail (detail)}
-						<li class="py-3 text-aluminium">{detail}</li>
-					{/each}
-				</ul>
-			{/if}
-		</section>
-
-		<section aria-labelledby="specs">
-			<h2 id="specs" class="type-h2">{t('artwork.specs')}</h2>
-			<dl class="mt-5 divide-y divide-hairline border-y border-hairline">
-				{#each specRows(artwork) as [label, value] (label)}
-					<div class="grid grid-cols-[9rem_minmax(0,1fr)] gap-4 py-3">
-						<dt class="text-aluminium">{label}</dt>
-						<dd>{value}</dd>
-					</div>
-				{/each}
-			</dl>
-		</section>
-	</div>
-
-	<!-- Over de kunstenaar -->
-	{#if artist}
-		<section class="mt-section" aria-labelledby="about-artist">
-			<h2 id="about-artist" class="type-h2">{t('artwork.aboutArtist')}</h2>
-			<div class="mt-5 flex flex-wrap items-center gap-3">
-				<p class="type-h3">{artist.name}</p>
-				{#if artist.isDemo}<DemoBadge kind="artist" />{/if}
-			</div>
-			<p class="mt-3 max-w-measure text-aluminium">{artist.shortBio}</p>
-			<Button
-				variant="link"
-				href={resolve('/kunstenaars/[slug]', { slug: artist.slug })}
-				class="mt-3"
-			>
-				{t('artwork.viewArtist', { name: artist.name })}
-			</Button>
-		</section>
-	{/if}
+	<ArtworkInfo {artwork} />
 
 	<!-- Meer van deze kunstenaar / Misschien ook iets voor jou -->
 	{#if related.works.length}

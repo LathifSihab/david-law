@@ -84,7 +84,7 @@
 </script>
 
 <div>
-	<SpotlightFrame class="min-h-[min(72vh,620px)]">
+	<SpotlightFrame class="lg:min-h-[min(72vh,620px)]">
 		<button
 			bind:this={opener}
 			type="button"

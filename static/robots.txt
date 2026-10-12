@@ -1,0 +1,3 @@
+# Client demo: keep out of search engines (see also the noindex meta tag)
+User-agent: *
+Disallow: /

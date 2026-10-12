@@ -13,7 +13,9 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 			// Fully static: no SPA fallback, every route is prerendered (see src/routes/+layout.ts).
-			adapter: adapter({ pages: 'build', assets: 'build', fallback: undefined, strict: true })
+			// No options on purpose: the defaults (build/, strict, no fallback) are what we want, and
+			// passing any option disables adapter-static's Vercel zero-config output.
+			adapter: adapter()
 		})
 	]
 });

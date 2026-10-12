@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+<defs>
+<filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="7.2"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="203" stitchTiles="stitch"/>
+<feColorMatrix type="saturate" values="0"/>
+</filter>
+</defs>
+<rect width="1200" height="1200" fill="#5e4538"/><rect x="471.5" width="728.5" height="1200" fill="#b99a7c"/><rect x="377.7" y="382.2" width="295.4" height="423.9" fill="#33292a"/><rect x="451.6" y="806.1" width="147.7" height="96" fill="#ddcdb8"/><rect x="471.5" y="1025.4" width="728.5" height="4.8" fill="#33292a" opacity="0.7"/>
+<rect width="1200" height="1200" filter="url(#grain)" opacity="0.09" style="mix-blend-mode:overlay"/>
+</svg>

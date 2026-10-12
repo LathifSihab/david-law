@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200">
+<defs>
+<filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="4.8"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="111" stitchTiles="stitch"/>
+<feColorMatrix type="saturate" values="0"/>
+</filter>
+</defs>
+<rect width="800" height="1200" fill="#26323a"/><path d="M0 0 L800 14.6 L800 276.7 L0 262.1 Z" fill="#3f555c" opacity="0.7" filter="url(#soft)"/><path d="M0 262 L800 257.7 L800 476.5 L0 480.7 Z" fill="#6d837f" opacity="0.6" filter="url(#soft)"/><path d="M0 448.1 L800 437.1 L800 646.1 L0 657.1 Z" fill="#a9ab97" opacity="0.9" filter="url(#soft)"/><path d="M0 600.2 L800 611.5 L800 750.7 L0 739.4 Z" fill="#3f555c" opacity="0.9" filter="url(#soft)"/><path d="M0 732.1 L800 711.4 L800 912.5 L0 933.2 Z" fill="#a9ab97" opacity="0.6" filter="url(#soft)"/><path d="M0 898.8 L800 910.6 L800 1001.5 L0 989.6 Z" fill="#a9ab97" opacity="0.8" filter="url(#soft)"/><path d="M0 982.4 L800 975.1 L800 1093.2 L0 1100.5 Z" fill="#a9ab97" opacity="0.8" filter="url(#soft)"/><path d="M0 1082.6 L800 1070.9 L800 1235.1 L0 1246.8 Z" fill="#3f555c" opacity="0.7" filter="url(#soft)"/>
+<rect width="800" height="1200" filter="url(#grain)" opacity="0.09" style="mix-blend-mode:overlay"/>
+</svg>

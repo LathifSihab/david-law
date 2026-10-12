@@ -7,7 +7,7 @@
 	import { formatPrice } from '#lib/utils/format.js';
 	import Button from '#lib/components/Button.svelte';
 	import DemoBadge from '#lib/components/DemoBadge.svelte';
-	import DemoBanner from '#lib/components/DemoBanner.svelte';
+	import { getArtwork, getMainImage } from '#lib/data/artworks.js';
 	import SpotlightFrame from '#lib/components/SpotlightFrame.svelte';
 	import Countdown from '#lib/components/Countdown.svelte';
 	import Dialog from '#lib/components/Dialog.svelte';
@@ -24,13 +24,7 @@
 		{ token: 'demo', hex: '#7F8A9A', use: 'Demo badges and banner' }
 	];
 
-	// Sample artwork for the frame preview; real data arrives in Task 3.
-	const sample = {
-		src: '/artworks/david-law-crypto-nick-cave-vi/main.webp',
-		width: 369,
-		height: 751,
-		alt: "Crypto Nick Cave VI van David Law: portret van Nick Cave in donker pak tegen een zwarte achtergrond, opgebouwd uit een mozaïek van kleine foto's"
-	};
+	const sample = getMainImage(getArtwork('david-law-crypto-nick-cave-vi')!);
 
 	const mountedAt = Date.now();
 	const countdowns = [
@@ -47,8 +41,6 @@
 <svelte:head>
 	<title>Styleguide — {t('brand.name')}</title>
 </svelte:head>
-
-<DemoBanner />
 
 <div class="shell space-y-(--spacing-section) py-16">
 	<header class="space-y-3">

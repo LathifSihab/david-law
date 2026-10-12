@@ -109,6 +109,7 @@ export const nl = {
 
 	artwork: {
 		breadcrumbRoot: 'Collectie',
+		breadcrumbLabel: 'Kruimelpad',
 		priceOnRequest: 'Prijs op aanvraag',
 		sold: 'Verkocht',
 		soldLong: 'Dit werk is verkocht',
@@ -151,6 +152,7 @@ export const nl = {
 		editionFull: 'Exemplaar {label} uit een oplage van {size} + {ap} E.A.',
 		editionSimple: 'Oplage van {size}',
 		editionWithProofs: 'Oplage van {size} + {ap} E.A.',
+		editionLabelled: 'Exemplaar {label} uit een oplage van {size}',
 		unique: 'Uniek werk',
 		aboutArtist: 'Over de kunstenaar',
 		viewArtist: 'Meer over {name}',
@@ -227,6 +229,13 @@ export const nl = {
 		errorRead: 'Dit bestand kon niet gelezen worden. Gebruik een .xlsx- of .csv-bestand.'
 	},
 
+	notFound: {
+		title: 'Niet gevonden',
+		page: 'Deze pagina bestaat niet.',
+		work: 'Dit werk bestaat niet (meer).',
+		error: 'Er ging iets mis. Probeer het later opnieuw.',
+		back: 'Bekijk de collectie'
+	},
 	footer: {
 		rights: '© 2026 Kunstkamer — demo'
 	},

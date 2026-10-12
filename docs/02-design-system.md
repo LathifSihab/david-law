@@ -65,7 +65,7 @@ Fallbacks: `"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif` and `"Schibsted
 Rules:
 
 - Titles in Bodoni, in **sentence case**, never all caps. Artwork titles are in italic only inside the wall label (the gallery convention).
-- Numbers (prices, countdown, dimensions) always use `font-variant-numeric: tabular-nums` so they don't jitter.
+- Numbers that change (countdowns, live bids) use `font-variant-numeric: tabular-nums` so they don't jitter. Static prices stay proportional: in Schibsted Grotesk the tabular thousands dot is a full digit wide and "€ 1.450" reads as "€ 1 . 450" (changed 12 Oct 2026).
 - Left-align everything except the hero title block.
 
 ## Layout

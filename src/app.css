@@ -91,7 +91,9 @@
 	font-size: var(--text-price);
 	line-height: var(--text-price--line-height);
 	font-weight: 600;
-	font-variant-numeric: tabular-nums;
+	/* Proportional on purpose: tabular figures give the thousands dot a full digit width
+	   ("€ 1 . 450"). Ticking numbers (countdowns) stay tabular. */
+	font-variant-numeric: proportional-nums;
 }
 
 /* Page width with side gutters */

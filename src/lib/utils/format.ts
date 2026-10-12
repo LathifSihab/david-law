@@ -74,8 +74,13 @@ export function formatRelative(date: string | number | Date, now: number = Date.
 export function slugify(text: string): string {
 	return text
 		.normalize('NFKD')
-		.replace(/[̀-ͯ]/g, '')
+		.replace(/[\u0300-\u036f]/g, '')
 		.toLowerCase()
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/^-+|-+$/g, '');
+}
+
+/** 1 → "001", as on an auction lot label ("Kavel 001"). */
+export function formatLotNumber(n: number): string {
+	return String(n).padStart(3, '0');
 }

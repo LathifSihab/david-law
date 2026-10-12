@@ -20,6 +20,7 @@
 	import Countdown from '#lib/components/Countdown.svelte';
 	import DemoBadge from '#lib/components/DemoBadge.svelte';
 	import SectionHeading from '#lib/components/SectionHeading.svelte';
+	import { TILE_ROW, TILE_ROW_ITEM } from '#lib/utils/layout.js';
 
 	// The first featured work is the featured lot in the hero; the rest form the Uitgelicht row.
 	const [heroWork, ...featured] = getFeatured();
@@ -44,11 +45,6 @@
 	let activeArtist = $state(artistList[0].artist.slug);
 	const activeEntry = $derived(artistList.find((entry) => entry.artist.slug === activeArtist));
 	const activeImage = $derived(activeEntry ? getMainImage(activeEntry.works[0]) : undefined);
-
-	// Horizontal scroll-snap row on small screens, a grid from `lg`.
-	const row =
-		'-mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-6 overflow-x-auto px-gutter pb-4 lg:mx-0 lg:grid lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-0';
-	const rowItem = 'w-[68vw] max-w-72 shrink-0 snap-start sm:w-[40vw] lg:w-auto lg:max-w-none';
 </script>
 
 <svelte:head>
@@ -124,9 +120,9 @@
 			href={resolve('/veilingen')}
 			linkLabel={t('home.allAuctions')}
 		/>
-		<ul class="{row} lg:grid-cols-5">
+		<ul class="{TILE_ROW} lg:grid-cols-5">
 			{#each closingSoon as { lot, artwork } (lot.slug)}
-				<li class={rowItem}>
+				<li class={TILE_ROW_ITEM}>
 					<ArtworkTile {artwork} {lot} eyeLine="[--tile-h:220px] lg:[--tile-h:240px]" />
 				</li>
 			{/each}
@@ -141,9 +137,9 @@
 			href={resolve('/collectie')}
 			linkLabel={t('home.viewAll')}
 		/>
-		<ul class="{row} lg:grid-cols-4">
+		<ul class="{TILE_ROW} lg:grid-cols-4">
 			{#each featured as artwork (artwork.id)}
-				<li class={rowItem}>
+				<li class={TILE_ROW_ITEM}>
 					<ArtworkTile {artwork} eyeLine="[--tile-h:260px] lg:[--tile-h:320px]" />
 				</li>
 			{/each}

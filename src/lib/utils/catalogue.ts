@@ -120,7 +120,11 @@ export function countByTechnique(works: Artwork[]): Record<TechniqueGroup, numbe
 
 // ---------------------------------------------------------------- filtering and sorting
 
-const normalise = (text: string) => text.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const normalise = (text: string) =>
+	text
+		.normalize('NFKD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase();
 
 function matchesSearch(artwork: Artwork, q: string): boolean {
 	if (!q) return true;
@@ -281,4 +285,28 @@ export function serializeFilters(f: Filters): string {
 	if (f.sort !== 'newest') set('sort', toParam([f.sort], SORTS));
 	// Keep commas readable in shared links.
 	return params.toString().replace(/%2C/g, ',');
+}
+
+// ---------------------------------------------------------------- related works
+
+/**
+ * Up to `limit` other works by the same artist. With fewer than 2, the row is filled with works
+ * from the same technique group (docs/04), and `byArtist` is false so the heading can change.
+ */
+export function getRelatedWorks(
+	artwork: Artwork,
+	works: Artwork[],
+	limit = 4
+): { works: Artwork[]; byArtist: boolean } {
+	const newestFirst = (a: Artwork, b: Artwork) => b.addedAt.localeCompare(a.addedAt);
+	const sameArtist = works
+		.filter((w) => w.artistSlug === artwork.artistSlug && w.id !== artwork.id)
+		.sort(newestFirst);
+	if (sameArtist.length >= 2) return { works: sameArtist.slice(0, limit), byArtist: true };
+
+	const group = getTechniqueGroup(artwork);
+	const fill = works
+		.filter((w) => w.id !== artwork.id && !sameArtist.includes(w) && getTechniqueGroup(w) === group)
+		.sort(newestFirst);
+	return { works: [...sameArtist, ...fill].slice(0, limit), byArtist: false };
 }

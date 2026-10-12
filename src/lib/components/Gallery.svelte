@@ -122,7 +122,7 @@
 							tabindex={i === active ? 0 : -1}
 							aria-current={i === active ? 'true' : undefined}
 							aria-label={t('artwork.galleryImageOf', { n: i + 1, total })}
-							class="block p-1 opacity-60 transition-opacity hover:opacity-100 aria-current:opacity-100 aria-current:outline aria-current:outline-paper"
+							class="flex min-w-11 justify-center p-1 opacity-60 transition-opacity hover:opacity-100 aria-current:opacity-100 aria-current:outline aria-current:outline-paper"
 							onclick={() => (active = i)}
 							onkeydown={onThumbKeydown}
 						>

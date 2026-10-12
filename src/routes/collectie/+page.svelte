@@ -192,7 +192,7 @@
 							<li>
 								<button
 									type="button"
-									class="inline-flex min-h-9 items-center gap-2 rounded-full border border-hairline bg-plinth py-1 pr-2.5 pl-3.5 type-small text-paper hover:border-aluminium"
+									class="inline-flex min-h-11 items-center gap-2 rounded-full border border-hairline bg-plinth py-1 pr-2.5 pl-3.5 type-small text-paper hover:border-aluminium"
 									aria-label={t('catalogue.removeFilter', { name: chip.label })}
 									onclick={() => navigate(chip.next)}
 								>
@@ -204,7 +204,7 @@
 					</ul>
 					<button
 						type="button"
-						class="ml-1 min-h-9 px-1 type-small text-aluminium underline underline-offset-4 hover:text-paper"
+						class="ml-1 min-h-11 px-1 type-small text-aluminium underline underline-offset-4 hover:text-paper"
 						onclick={clearAll}
 					>
 						{t('catalogue.clearAll')}
@@ -220,6 +220,7 @@
 						<li>
 							<ArtworkTile
 								{artwork}
+								headingLevel="h2"
 								loading={i < 4 ? 'eager' : 'lazy'}
 								eyeLine="[--tile-h:260px] sm:[--tile-h:240px] xl:[--tile-h:260px]"
 							/>

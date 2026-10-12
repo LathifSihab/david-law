@@ -187,7 +187,7 @@
 					<li>
 						<a
 							href={resolve('/kunstenaars/[slug]', { slug: artist.slug })}
-							class="group inline-flex items-baseline gap-3 py-1"
+							class="group inline-flex min-h-11 items-baseline gap-3 py-1"
 							onmouseenter={() => (activeArtist = artist.slug)}
 							onfocus={() => (activeArtist = artist.slug)}
 						>

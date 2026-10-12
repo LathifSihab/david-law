@@ -141,6 +141,20 @@
 		color: var(--color-paper);
 	}
 
+	/* Long Dutch words ("kunstenaarsbiografie") hyphenate in running text (html lang="nl").
+	   Headings never hyphenate, they only break as a last resort. */
+	p,
+	li,
+	dd,
+	td {
+		hyphens: auto;
+	}
+	h1,
+	h2,
+	h3 {
+		overflow-wrap: break-word;
+	}
+
 	/* Numbers never jitter */
 	time,
 	[data-numeric] {

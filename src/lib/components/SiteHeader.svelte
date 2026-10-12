@@ -60,7 +60,10 @@
 		: 'border-transparent bg-wall'}"
 >
 	<div class="shell flex h-16 items-center justify-between gap-6 md:h-20">
-		<a href={resolve('/')} class="font-display text-[1.75rem] leading-none md:text-[2rem]">
+		<a
+			href={resolve('/')}
+			class="-my-2 inline-flex min-h-11 items-center py-2 font-display text-[1.75rem] leading-none md:text-[2rem]"
+		>
 			{config.brandName}
 		</a>
 
@@ -72,7 +75,7 @@
 							<a
 								href={link.href}
 								aria-current={isCurrent(link.href) ? 'page' : undefined}
-								class="py-2 text-aluminium underline-offset-[6px] transition-colors hover:text-paper aria-[current=page]:text-paper aria-[current=page]:underline"
+								class="inline-flex min-h-11 items-center text-aluminium underline-offset-[6px] transition-colors hover:text-paper aria-[current=page]:text-paper aria-[current=page]:underline"
 							>
 								{link.label}
 							</a>

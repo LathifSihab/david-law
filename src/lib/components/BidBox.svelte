@@ -100,7 +100,7 @@
 	{#if count > 0}
 		<a
 			href="#history"
-			class="mt-1 inline-block type-small text-aluminium underline underline-offset-4 hover:text-paper"
+			class="inline-flex min-h-11 items-center type-small text-aluminium underline underline-offset-4 hover:text-paper"
 		>
 			{plural(count, 'auction.bidsCountOne', 'auction.bidsCount')}
 		</a>

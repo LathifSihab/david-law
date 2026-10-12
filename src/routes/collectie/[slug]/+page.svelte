@@ -66,7 +66,9 @@
 	<nav aria-label={t('artwork.breadcrumbLabel')} class="mb-6 type-small text-aluminium">
 		<ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
 			<li>
-				<a href={resolve('/collectie')} class="hover:text-paper hover:underline"
+				<a
+					href={resolve('/collectie')}
+					class="-my-3 inline-block py-3 hover:text-paper hover:underline"
 					>{t('artwork.breadcrumbRoot')}</a
 				>
 			</li>
@@ -75,7 +77,7 @@
 				<li>
 					<a
 						href={resolve('/kunstenaars/[slug]', { slug: artist.slug })}
-						class="hover:text-paper hover:underline">{artist.name}</a
+						class="-my-3 inline-block py-3 hover:text-paper hover:underline">{artist.name}</a
 					>
 				</li>
 				<li aria-hidden="true">/</li>
@@ -95,7 +97,7 @@
 			{#if artist}
 				<a
 					href={resolve('/kunstenaars/[slug]', { slug: artist.slug })}
-					class="font-semibold decoration-1 underline-offset-4 hover:underline"
+					class="-my-3 inline-block py-3 font-semibold decoration-1 underline-offset-4 hover:underline"
 				>
 					{artist.name}
 				</a>

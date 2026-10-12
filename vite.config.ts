@@ -18,7 +18,10 @@ export default defineConfig({
 			adapter: adapter(),
 			// Root-relative asset URLs, so 404.html works when served at any depth (e.g. a missing
 			// /collectie/<slug>). Relative "./_app" paths would resolve to /collectie/_app/.
-			paths: { relative: false }
+			paths: { relative: false },
+			// Inline the stylesheet (~44 kB, ~8 kB gzipped) so it doesn't block the first paint (Lighthouse:
+			// it delayed the hero image, our LCP element, by ~1.5 s).
+			inlineStyleThreshold: 60_000
 		})
 	]
 });

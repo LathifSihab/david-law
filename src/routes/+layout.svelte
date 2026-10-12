@@ -3,7 +3,7 @@
 	import '@fontsource-variable/bodoni-moda/opsz-italic.css';
 	import '@fontsource-variable/schibsted-grotesk/wght.css';
 	import '../app.css';
-	import favicon from '#lib/assets/favicon.svg';
+	import { config } from '#lib/config.js';
 	import { t } from '#lib/i18n/index.js';
 	import DemoBanner from '#lib/components/DemoBanner.svelte';
 	import SiteHeader from '#lib/components/SiteHeader.svelte';
@@ -15,7 +15,21 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	<meta name="theme-color" content="#1a1b1d" />
+	<!-- Link previews (WhatsApp, Slack, mail). The shared link is the home page, so these are site-wide. -->
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content={config.brandName} />
+	<meta property="og:locale" content="nl_BE" />
+	<meta property="og:title" content={t('meta.homeTitle')} />
+	<meta property="og:description" content={t('meta.homeDescription')} />
+	<meta property="og:url" content={config.siteUrl} />
+	<meta property="og:image" content="{config.siteUrl}/og-image.jpg" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={t('meta.homeTitle')} />
+	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <a

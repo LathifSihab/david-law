@@ -29,7 +29,7 @@
 	<DemoBanner />
 	<SiteHeader />
 
-	<main id="content" tabindex="-1" class="flex-1 pb-(--spacing-section) outline-none">
+	<main id="content" tabindex="-1" class="flex-1 pb-section outline-none">
 		{@render children()}
 	</main>
 

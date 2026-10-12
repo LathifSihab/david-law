@@ -42,7 +42,7 @@
 	<title>Styleguide — {t('brand.name')}</title>
 </svelte:head>
 
-<div class="shell space-y-(--spacing-section) py-16">
+<div class="shell space-y-section py-16">
 	<header class="space-y-3">
 		<h1 class="type-h1">Styleguide</h1>
 		<p class="max-w-measure text-aluminium">{t('brand.tagline')}</p>

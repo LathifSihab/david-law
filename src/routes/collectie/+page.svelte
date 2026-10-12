@@ -1,12 +1,267 @@
-<!-- Catalogue: built in Task 5 (docs/04). Temporary stub. -->
+<!-- Catalogue (docs/04 section 2). All filter, sort and search state lives in the URL. -->
 <script lang="ts">
-	import { t } from '#lib/i18n/index.js';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
+	import { t, plural } from '#lib/i18n/index.js';
+	import { artworks } from '#lib/data/artworks.js';
+	import { getArtist } from '#lib/data/artists.js';
+	import {
+		EMPTY_FILTERS,
+		SORTS,
+		activeFilterCount,
+		filterWorks,
+		parseFilters,
+		serializeFilters,
+		sortWorks,
+		type Filters,
+		type SortKey
+	} from '#lib/utils/catalogue.js';
+	import ArtworkTile from '#lib/components/ArtworkTile.svelte';
+	import FilterPanel from '#lib/components/FilterPanel.svelte';
+	import Button from '#lib/components/Button.svelte';
+	import CloseIcon from '#lib/components/CloseIcon.svelte';
+
+	// The page is prerendered without a query string, so the URL can only be read in the browser.
+	// Until mount we render the unfiltered collection, exactly like the prerendered HTML.
+	let mounted = $state(false);
+	onMount(() => (mounted = true));
+
+	const filters = $derived(mounted ? parseFilters(page.url.searchParams) : EMPTY_FILTERS);
+	const results = $derived(sortWorks(filterWorks(artworks, filters), filters.sort));
+	const activeCount = $derived(activeFilterCount(filters));
+	const countLabel = $derived(
+		plural(results.length, 'catalogue.resultCountOne', 'catalogue.resultCount')
+	);
+
+	/**
+	 * Writes a filter state to the URL. Checkbox and sort changes push a history entry so the back
+	 * button steps through them; search typing replaces it.
+	 */
+	function navigate(next: Filters, replace = false) {
+		const qs = serializeFilters(next);
+		goto(qs ? resolve(`/collectie?${qs}`) : resolve('/collectie'), {
+			replace,
+			// Keep scroll position and focus (e.g. in the search field or on a checkbox).
+			reset: false
+		});
+	}
+
+	function clearAll() {
+		navigate({ ...EMPTY_FILTERS, sort: filters.sort });
+	}
+
+	// Search field: local while typing, synced from the URL (e.g. the header search, back button).
+	let query = $state('');
+	let searchInput = $state<HTMLInputElement>();
+	let searchTimer: ReturnType<typeof setTimeout> | undefined;
+
+	$effect(() => {
+		const q = filters.q;
+		if (document.activeElement !== searchInput) query = q;
+	});
+
+	function onSearchInput() {
+		clearTimeout(searchTimer);
+		searchTimer = setTimeout(() => navigate({ ...filters, q: query }, true), 250);
+	}
+
+	// Removable chips for every active filter.
+	const chips = $derived.by(() => {
+		const f = filters;
+		return [
+			...f.status.map((s) => ({
+				id: `status-${s}`,
+				label: t(`catalogue.status.${s}`),
+				next: { ...f, status: f.status.filter((x) => x !== s) }
+			})),
+			...f.artist.map((slug) => ({
+				id: `artist-${slug}`,
+				label: getArtist(slug)?.name ?? slug,
+				next: { ...f, artist: f.artist.filter((x) => x !== slug) }
+			})),
+			...f.technique.map((key) => ({
+				id: `technique-${key}`,
+				label: t(`catalogue.technique.${key}`),
+				next: { ...f, technique: f.technique.filter((x) => x !== key) }
+			})),
+			...f.size.map((key) => ({
+				id: `size-${key}`,
+				label: t(`catalogue.size.${key}`),
+				next: { ...f, size: f.size.filter((x) => x !== key) }
+			})),
+			...f.orientation.map((key) => ({
+				id: `orientation-${key}`,
+				label: t(`catalogue.orientation.${key}`),
+				next: { ...f, orientation: f.orientation.filter((x) => x !== key) }
+			})),
+			...(f.min !== undefined
+				? [
+						{
+							id: 'min',
+							label: `${t('catalogue.priceMin')} ${f.min}`,
+							next: { ...f, min: undefined }
+						}
+					]
+				: []),
+			...(f.max !== undefined
+				? [
+						{
+							id: 'max',
+							label: `${t('catalogue.priceMax')} ${f.max}`,
+							next: { ...f, max: undefined }
+						}
+					]
+				: [])
+		];
+	});
+
+	// Mobile filter sheet: a native modal <dialog> traps focus and closes on Esc.
+	let sheet = $state<HTMLDialogElement>();
 </script>
 
 <svelte:head>
 	<title>{t('meta.collectionTitle')}</title>
+	<meta name="description" content={t('brand.footerLine')} />
 </svelte:head>
 
-<div class="shell py-16">
-	<h1 class="type-h1">{t('catalogue.title')}</h1>
+<div class="shell pt-10 md:pt-14">
+	<header
+		class="flex flex-wrap items-end justify-between gap-x-8 gap-y-6 border-b border-hairline pb-6"
+	>
+		<div>
+			<h1 class="type-h1">{t('catalogue.title')}</h1>
+			<p class="mt-2 text-aluminium tabular-nums" aria-live="polite">{countLabel}</p>
+		</div>
+
+		<div class="flex w-full flex-wrap items-end gap-3 md:w-auto">
+			<label class="w-full md:w-72">
+				<span class="sr-only">{t('catalogue.searchLabel')}</span>
+				<input
+					bind:this={searchInput}
+					bind:value={query}
+					oninput={onSearchInput}
+					type="search"
+					placeholder={t('nav.searchPlaceholder')}
+					class="block h-11 w-full rounded-control border border-hairline bg-plinth px-4 text-paper placeholder:text-aluminium"
+				/>
+			</label>
+
+			<label class="flex flex-1 items-center gap-3 md:flex-none">
+				<span class="type-small whitespace-nowrap text-aluminium">{t('catalogue.sortLabel')}</span>
+				<select
+					value={filters.sort}
+					onchange={(e) => navigate({ ...filters, sort: e.currentTarget.value as SortKey })}
+					class="h-11 w-full rounded-control border border-hairline bg-plinth px-3 text-paper md:w-auto"
+				>
+					{#each SORTS as sort (sort.key)}
+						<option value={sort.key}>{t(`catalogue.sort.${sort.key}`)}</option>
+					{/each}
+				</select>
+			</label>
+
+			<button
+				type="button"
+				class="inline-flex h-11 items-center gap-2 rounded-control border border-paper px-4 font-medium lg:hidden"
+				aria-haspopup="dialog"
+				onclick={() => sheet?.showModal()}
+			>
+				{t('catalogue.filters')}
+				{#if activeCount}
+					<span class="tabular-nums">({activeCount})</span>
+				{/if}
+			</button>
+		</div>
+	</header>
+
+	<div class="mt-8 lg:grid lg:grid-cols-[var(--container-sidebar)_minmax(0,1fr)] lg:gap-12">
+		<!-- Desktop: sticky sidebar -->
+		<aside
+			class="sticky top-28 hidden max-h-[calc(100dvh-8rem)] self-start overflow-y-auto pr-2 lg:block"
+			aria-label={t('catalogue.filters')}
+		>
+			<FilterPanel works={artworks} {filters} onchange={(next) => navigate(next)} />
+		</aside>
+
+		<div>
+			{#if chips.length}
+				<div class="mb-8 flex flex-wrap items-center gap-2">
+					<ul class="contents">
+						{#each chips as chip (chip.id)}
+							<li>
+								<button
+									type="button"
+									class="inline-flex min-h-9 items-center gap-2 rounded-full border border-hairline bg-plinth py-1 pr-2.5 pl-3.5 type-small text-paper hover:border-aluminium"
+									aria-label={t('catalogue.removeFilter', { name: chip.label })}
+									onclick={() => navigate(chip.next)}
+								>
+									{chip.label}
+									<CloseIcon size={12} />
+								</button>
+							</li>
+						{/each}
+					</ul>
+					<button
+						type="button"
+						class="ml-1 min-h-9 px-1 type-small text-aluminium underline underline-offset-4 hover:text-paper"
+						onclick={clearAll}
+					>
+						{t('catalogue.clearAll')}
+					</button>
+				</div>
+			{/if}
+
+			{#if results.length}
+				<ul
+					class="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-14 lg:grid-cols-3 xl:grid-cols-4"
+				>
+					{#each results as artwork, i (artwork.id)}
+						<li>
+							<ArtworkTile
+								{artwork}
+								loading={i < 4 ? 'eager' : 'lazy'}
+								eyeLine="[--tile-h:260px] sm:[--tile-h:240px] xl:[--tile-h:260px]"
+							/>
+						</li>
+					{/each}
+				</ul>
+			{:else}
+				<div class="py-16">
+					<p class="type-h2">{t('catalogue.empty')}</p>
+					<Button variant="secondary" class="mt-6" onclick={clearAll}>
+						{t('catalogue.clearAllFilters')}
+					</Button>
+				</div>
+			{/if}
+		</div>
+	</div>
 </div>
+
+<!-- Mobile: bottom sheet -->
+<dialog
+	bind:this={sheet}
+	aria-labelledby="filter-sheet-title"
+	class="inset-x-0 top-auto bottom-0 m-0 max-h-[85dvh] w-full max-w-none flex-col bg-wall p-0 text-paper backdrop:bg-wall-deep/80 open:flex lg:hidden"
+>
+	<div class="flex items-center justify-between border-b border-hairline px-gutter py-3">
+		<h2 id="filter-sheet-title" class="type-h3">{t('catalogue.filters')}</h2>
+		<button
+			type="button"
+			class="-mr-2 grid size-11 place-items-center rounded-control"
+			aria-label={t('nav.close')}
+			onclick={() => sheet?.close()}
+		>
+			<CloseIcon size={18} />
+		</button>
+	</div>
+	<div class="flex-1 overflow-y-auto px-gutter py-5">
+		<FilterPanel works={artworks} {filters} onchange={(next) => navigate(next)} />
+	</div>
+	<div class="grid grid-cols-2 gap-3 border-t border-hairline px-gutter py-4">
+		<Button variant="secondary" onclick={clearAll}>{t('catalogue.clearAll')}</Button>
+		<Button onclick={() => sheet?.close()}>
+			{t('catalogue.showResults', { count: results.length })}
+		</Button>
+	</div>
+</dialog>

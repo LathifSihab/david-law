@@ -12,7 +12,7 @@
 	} from '#lib/data/artworks.js';
 	import { getAuction, getLiveAuctions } from '#lib/data/auctions.js';
 	import { getEndsAt } from '#lib/data/auction-state.svelte.js';
-	import { TECHNIQUE_GROUPS, countByTechnique } from '#lib/utils/catalogue.js';
+	import { TECHNIQUE_GROUPS, countByTechnique, surnameKey } from '#lib/utils/catalogue.js';
 	import Button from '#lib/components/Button.svelte';
 	import SpotlightFrame from '#lib/components/SpotlightFrame.svelte';
 	import WallLabel from '#lib/components/WallLabel.svelte';
@@ -37,9 +37,8 @@
 	const techniqueCounts = countByTechnique(artworks);
 
 	// By surname, as a gallery would: no single artist leads the list.
-	const surname = (name: string) => name.slice(name.indexOf(' ') + 1);
 	const artistList = [...artists]
-		.sort((a, b) => surname(a.name).localeCompare(surname(b.name), 'nl'))
+		.sort((a, b) => surnameKey(a.name).localeCompare(surnameKey(b.name), 'nl'))
 		.map((artist) => ({ artist, works: getWorksByArtist(artist.slug) }));
 
 	let activeArtist = $state(artistList[0].artist.slug);
@@ -48,7 +47,7 @@
 
 	// Horizontal scroll-snap row on small screens, a grid from `lg`.
 	const row =
-		'-mx-(--spacing-gutter) flex snap-x snap-mandatory scroll-px-(--spacing-gutter) gap-6 overflow-x-auto px-(--spacing-gutter) pb-4 lg:mx-0 lg:grid lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-0';
+		'-mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-6 overflow-x-auto px-gutter pb-4 lg:mx-0 lg:grid lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-0';
 	const rowItem = 'w-[68vw] max-w-72 shrink-0 snap-start sm:w-[40vw] lg:w-auto lg:max-w-none';
 </script>
 
@@ -58,7 +57,7 @@
 	<link rel="preload" as="image" href={heroImage.src} fetchpriority="high" />
 </svelte:head>
 
-<div class="space-y-(--spacing-section)">
+<div class="space-y-section">
 	<!-- Hero: the platform, with one featured lot under the spotlight -->
 	<section
 		class="shell grid items-center gap-10 pt-10 md:pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16"

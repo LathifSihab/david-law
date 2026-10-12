@@ -20,7 +20,7 @@
 	import Countdown from '#lib/components/Countdown.svelte';
 	import DemoBadge from '#lib/components/DemoBadge.svelte';
 	import SectionHeading from '#lib/components/SectionHeading.svelte';
-	import { TILE_ROW, TILE_ROW_ITEM } from '#lib/utils/layout.js';
+	import { TILE_ROW, TILE_ROW_ITEM, imageSize } from '#lib/utils/layout.js';
 
 	// The first featured work is the featured lot in the hero; the rest form the Uitgelicht row.
 	const [heroWork, ...featured] = getFeatured();
@@ -73,15 +73,18 @@
 		<figure class="min-w-0">
 			<a href={heroHref} tabindex="-1" aria-hidden="true" class="block">
 				<SpotlightFrame lightsOn>
-					<img
-						src={heroImage.src}
-						width={heroImage.width}
-						height={heroImage.height}
-						alt={heroImage.alt}
-						fetchpriority="high"
-						decoding="async"
-						class="block h-auto max-h-[min(60vh,560px)] w-auto max-w-full"
-					/>
+					<div class="@container flex w-full justify-center">
+						<img
+							src={heroImage.src}
+							width={heroImage.width}
+							height={heroImage.height}
+							alt={heroImage.alt}
+							fetchpriority="high"
+							decoding="async"
+							class="block"
+							style={imageSize(heroImage, '100cqw', 'min(60vh, 560px)')}
+						/>
+					</div>
 				</SpotlightFrame>
 			</a>
 			<figcaption class="mt-5 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">

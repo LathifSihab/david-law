@@ -3,6 +3,10 @@
 	import '@fontsource-variable/bodoni-moda/opsz-italic.css';
 	import '@fontsource-variable/schibsted-grotesk/wght.css';
 	import '../app.css';
+	// Preloaded so text doesn't reflow when the webfonts arrive (Lighthouse CLS). Same hashed files
+	// the @font-face rules use; only the Latin subsets are ever needed for Dutch copy.
+	import bodoniLatin from '@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2?url';
+	import schibstedLatin from '@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url';
 	import { config } from '#lib/config.js';
 	import { t } from '#lib/i18n/index.js';
 	import DemoBanner from '#lib/components/DemoBanner.svelte';
@@ -15,6 +19,8 @@
 </script>
 
 <svelte:head>
+	<link rel="preload" href={bodoniLatin} as="font" type="font/woff2" crossorigin="anonymous" />
+	<link rel="preload" href={schibstedLatin} as="font" type="font/woff2" crossorigin="anonymous" />
 	<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<meta name="theme-color" content="#1a1b1d" />

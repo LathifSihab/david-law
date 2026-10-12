@@ -6,6 +6,7 @@
 <script lang="ts">
 	import type { ArtworkImage } from '#lib/types.js';
 	import { t } from '#lib/i18n/index.js';
+	import { imageSize } from '#lib/utils/layout.js';
 	import SpotlightFrame from './SpotlightFrame.svelte';
 	import DemoBadge from './DemoBadge.svelte';
 	import CloseIcon from './CloseIcon.svelte';
@@ -21,10 +22,6 @@
 	const current = $derived(images[active]);
 	const total = $derived(images.length);
 	const counter = $derived(t('artwork.galleryImageOf', { n: active + 1, total }));
-
-	/** Never upscale a supplied image beyond 1.25× its intrinsic size (docs/03 note on low-res files). */
-	const cap = (image: ArtworkImage, viewport: string) =>
-		`max-height: min(${viewport}, ${Math.round(image.height * 1.25)}px); max-width: min(100%, ${Math.round(image.width * 1.25)}px)`;
 
 	function go(delta: number) {
 		active = (active + delta + total) % total;
@@ -85,30 +82,33 @@
 
 <div>
 	<SpotlightFrame class="lg:min-h-[min(72vh,620px)]">
-		<button
-			bind:this={opener}
-			type="button"
-			class="relative block cursor-zoom-in touch-pan-y"
-			aria-label="{t('artwork.galleryOpen')}: {current.alt}"
-			onclick={openLightbox}
-			onpointerdown={onPointerDown}
-			onpointerup={onPointerUp}
-		>
-			<img
-				src={current.src}
-				width={current.width}
-				height={current.height}
-				alt={current.alt}
-				fetchpriority={active === 0 ? 'high' : 'auto'}
-				decoding="async"
-				draggable="false"
-				class="block h-auto w-auto select-none"
-				style={cap(current, '62vh')}
-			/>
-			{#if isDemo}
-				<DemoBadge class="absolute top-2 left-2" />
-			{/if}
-		</button>
+		<!-- A size container, so the image width can be computed from the frame (100cqw) -->
+		<div class="@container flex w-full justify-center">
+			<button
+				bind:this={opener}
+				type="button"
+				class="relative block cursor-zoom-in touch-pan-y"
+				aria-label="{t('artwork.galleryOpen')}: {current.alt}"
+				onclick={openLightbox}
+				onpointerdown={onPointerDown}
+				onpointerup={onPointerUp}
+			>
+				<img
+					src={current.src}
+					width={current.width}
+					height={current.height}
+					alt={current.alt}
+					fetchpriority={active === 0 ? 'high' : 'auto'}
+					decoding="async"
+					draggable="false"
+					class="block select-none"
+					style={imageSize(current, '100cqw', '62vh')}
+				/>
+				{#if isDemo}
+					<DemoBadge class="absolute top-2 left-2" />
+				{/if}
+			</button>
+		</div>
 	</SpotlightFrame>
 
 	{#if total > 1}
@@ -191,8 +191,8 @@
 				alt={current.alt}
 				decoding="async"
 				draggable="false"
-				class="block h-auto w-auto min-w-0 select-none"
-				style={cap(current, 'calc(100dvh - 7rem)')}
+				class="block min-w-0 select-none"
+				style={imageSize(current, 'calc(100vw - 8rem)', 'calc(100dvh - 7rem)')}
 				onpointerdown={onPointerDown}
 				onpointerup={onPointerUp}
 			/>

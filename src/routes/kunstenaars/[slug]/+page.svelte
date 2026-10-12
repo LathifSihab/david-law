@@ -3,6 +3,7 @@
 	import { t } from '#lib/i18n/index.js';
 	import { config } from '#lib/config.js';
 	import { getMainImage, getWorksByArtist } from '#lib/data/artworks.js';
+	import { imageSize } from '#lib/utils/layout.js';
 	import SpotlightFrame from '#lib/components/SpotlightFrame.svelte';
 	import ArtworkTile from '#lib/components/ArtworkTile.svelte';
 	import DemoBadge from '#lib/components/DemoBadge.svelte';
@@ -65,17 +66,17 @@
 						/>
 					</div>
 				{:else}
-					<img
-						src={visual.image.src}
-						width={visual.image.width}
-						height={visual.image.height}
-						alt={visual.image.alt}
-						decoding="async"
-						class="block h-auto w-auto"
-						style="max-height: min(52vh, {Math.round(
-							visual.image.height * 1.25
-						)}px); max-width: min(100%, {Math.round(visual.image.width * 1.25)}px)"
-					/>
+					<div class="@container flex w-full justify-center">
+						<img
+							src={visual.image.src}
+							width={visual.image.width}
+							height={visual.image.height}
+							alt={visual.image.alt}
+							decoding="async"
+							class="block"
+							style={imageSize(visual.image, '100cqw', '52vh')}
+						/>
+					</div>
 				{/if}
 			</SpotlightFrame>
 		{/if}
